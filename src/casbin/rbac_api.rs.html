@@ -1278,9 +1278,6 @@
 <a href="#1278" id="1278">1278</a>
 <a href="#1279" id="1279">1279</a>
 <a href="#1280" id="1280">1280</a>
-<a href="#1281" id="1281">1281</a>
-<a href="#1282" id="1282">1282</a>
-<a href="#1283" id="1283">1283</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{MgmtApi, <span class="prelude-ty">Result</span>};
 
 <span class="kw">use </span>async_trait::async_trait;
@@ -1576,10 +1573,7 @@
     ) -&gt; Vec&lt;Vec&lt;String&gt;&gt; {
         <span class="self">self</span>.get_filtered_policy(<span class="number">0</span>, {
             <span class="kw">if let </span><span class="prelude-val">Some</span>(domain) = domain {
-                [user, domain]
-                    .iter()
-                    .map(|s| (<span class="kw-2">*</span>s).to_string())
-                    .collect()
+                [user, domain].iter().map(|s| (<span class="kw-2">*</span>s).to_string()).collect()
             } <span class="kw">else </span>{
                 [user].iter().map(|s| (<span class="kw-2">*</span>s).to_string()).collect()
             }
