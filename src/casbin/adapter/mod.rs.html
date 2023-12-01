@@ -83,7 +83,7 @@
 
 <span class="attr">#[async_trait]
 </span><span class="kw">pub trait </span>Adapter: Send + Sync {
-    <span class="kw">async fn </span>load_policy(<span class="kw-2">&amp;</span><span class="self">self</span>, m: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Model) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt;;
+    <span class="kw">async fn </span>load_policy(<span class="kw-2">&amp;mut </span><span class="self">self</span>, m: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Model) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt;;
     <span class="kw">async fn </span>load_filtered_policy&lt;<span class="lifetime">&#39;a</span>&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         m: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Model,

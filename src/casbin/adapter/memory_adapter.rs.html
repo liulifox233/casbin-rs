@@ -231,6 +231,7 @@
 <a href="#231" id="231">231</a>
 <a href="#232" id="232">232</a>
 <a href="#233" id="233">233</a>
+<a href="#234" id="234">234</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     adapter::{Adapter, Filter},
     model::Model,
@@ -248,7 +249,8 @@
 
 <span class="attr">#[async_trait]
 </span><span class="kw">impl </span>Adapter <span class="kw">for </span>MemoryAdapter {
-    <span class="kw">async fn </span>load_policy(<span class="kw-2">&amp;</span><span class="self">self</span>, m: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Model) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+    <span class="kw">async fn </span>load_policy(<span class="kw-2">&amp;mut </span><span class="self">self</span>, m: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Model) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="self">self</span>.is_filtered = <span class="bool-val">false</span>;
         <span class="kw">for </span>line <span class="kw">in </span><span class="self">self</span>.policy.iter() {
             <span class="kw">let </span>sec = <span class="kw-2">&amp;</span>line[<span class="number">0</span>];
             <span class="kw">let </span>ptype = <span class="kw-2">&amp;</span>line[<span class="number">1</span>];

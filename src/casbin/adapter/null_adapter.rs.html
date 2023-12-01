@@ -92,7 +92,7 @@
 
 <span class="attr">#[async_trait]
 </span><span class="kw">impl </span>Adapter <span class="kw">for </span>NullAdapter {
-    <span class="kw">async fn </span>load_policy(<span class="kw-2">&amp;</span><span class="self">self</span>, _m: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Model) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+    <span class="kw">async fn </span>load_policy(<span class="kw-2">&amp;mut </span><span class="self">self</span>, _m: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Model) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="prelude-val">Ok</span>(())
     }
 

@@ -282,6 +282,14 @@
 <a href="#282" id="282">282</a>
 <a href="#283" id="283">283</a>
 <a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     adapter::{Adapter, Filter},
     error::{AdapterError, ModelError},
@@ -335,8 +343,15 @@
         }
     }
 
+    <span class="kw">pub fn </span>new_filtered_adapter(p: P) -&gt; FileAdapter&lt;P&gt; {
+        FileAdapter {
+            file_path: p,
+            is_filtered: <span class="bool-val">true</span>,
+        }
+    }
+
     <span class="kw">async fn </span>load_policy_file(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         m: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Model,
         handler: LoadPolicyFileHandler,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
@@ -394,7 +409,8 @@
 <span class="kw">where
     </span>P: AsRef&lt;Path&gt; + Send + Sync,
 {
-    <span class="kw">async fn </span>load_policy(<span class="kw-2">&amp;</span><span class="self">self</span>, m: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Model) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+    <span class="kw">async fn </span>load_policy(<span class="kw-2">&amp;mut </span><span class="self">self</span>, m: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Model) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="self">self</span>.is_filtered = <span class="bool-val">false</span>;
         <span class="self">self</span>.load_policy_file(m, load_policy_line).<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }

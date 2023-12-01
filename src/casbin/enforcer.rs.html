@@ -1562,6 +1562,11 @@
 <a href="#1562" id="1562">1562</a>
 <a href="#1563" id="1563">1563</a>
 <a href="#1564" id="1564">1564</a>
+<a href="#1565" id="1565">1565</a>
+<a href="#1566" id="1566">1566</a>
+<a href="#1567" id="1567">1567</a>
+<a href="#1568" id="1568">1568</a>
+<a href="#1569" id="1569">1569</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     adapter::{Adapter, Filter},
     convert::{EnforceArgs, TryIntoAdapter, TryIntoModel},
@@ -1980,7 +1985,11 @@
         a: A,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>e = <span class="self">Self</span>::new_raw(m, a).<span class="kw">await</span><span class="question-mark">?</span>;
-        e.load_policy().<span class="kw">await</span><span class="question-mark">?</span>;
+
+        <span class="comment">// Do not initialize the full policy when using a filtered adapter
+        </span><span class="kw">if </span>!e.adapter.is_filtered() {
+            e.load_policy().<span class="kw">await</span><span class="question-mark">?</span>;
+        }
         <span class="prelude-val">Ok</span>(e)
     }
 
@@ -2937,12 +2946,13 @@
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_filtered_file_adapter() {
-        <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(
-            <span class="string">&quot;examples/rbac_with_domains_model.conf&quot;</span>,
+        <span class="kw">let </span>adapter = FileAdapter::new_filtered_adapter(
             <span class="string">&quot;examples/rbac_with_domains_policy.csv&quot;</span>,
-        )
-        .<span class="kw">await
-        </span>.unwrap();
+        );
+        <span class="kw">let </span><span class="kw-2">mut </span>e =
+            Enforcer::new(<span class="string">&quot;examples/rbac_with_domains_model.conf&quot;</span>, adapter)
+                .<span class="kw">await
+                </span>.unwrap();
 
         <span class="kw">let </span>filter = Filter {
             p: <span class="macro">vec!</span>[<span class="string">&quot;&quot;</span>, <span class="string">&quot;domain1&quot;</span>],
