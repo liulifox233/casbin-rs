@@ -1112,8 +1112,8 @@
 <span class="attr">#[cfg(feature = <span class="string">&quot;incremental&quot;</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::emitter::EventData;
 
+<span class="kw">use </span>hashlink::{LinkedHashMap, LinkedHashSet};
 <span class="kw">use </span>parking_lot::RwLock;
-<span class="kw">use </span>ritelinked::{LinkedHashMap, LinkedHashSet};
 
 <span class="attr">#[cfg(all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)))]
 </span><span class="kw">use </span>async_std::path::Path <span class="kw">as </span>ioPath;
