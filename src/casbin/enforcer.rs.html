@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/enforcer.rs`."><title>enforcer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="casbin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/enforcer.rs`."><title>enforcer.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="casbin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.1 (3f5fd8dd4 2024-08-06)" data-channel="1.80.1" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1567,6 +1567,23 @@
 <a href="#1567" id="1567">1567</a>
 <a href="#1568" id="1568">1568</a>
 <a href="#1569" id="1569">1569</a>
+<a href="#1570" id="1570">1570</a>
+<a href="#1571" id="1571">1571</a>
+<a href="#1572" id="1572">1572</a>
+<a href="#1573" id="1573">1573</a>
+<a href="#1574" id="1574">1574</a>
+<a href="#1575" id="1575">1575</a>
+<a href="#1576" id="1576">1576</a>
+<a href="#1577" id="1577">1577</a>
+<a href="#1578" id="1578">1578</a>
+<a href="#1579" id="1579">1579</a>
+<a href="#1580" id="1580">1580</a>
+<a href="#1581" id="1581">1581</a>
+<a href="#1582" id="1582">1582</a>
+<a href="#1583" id="1583">1583</a>
+<a href="#1584" id="1584">1584</a>
+<a href="#1585" id="1585">1585</a>
+<a href="#1586" id="1586">1586</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     adapter::{Adapter, Filter},
     convert::{EnforceArgs, TryIntoAdapter, TryIntoModel},
@@ -1576,20 +1593,20 @@
     error::{ModelError, PolicyError, RequestError},
     get_or_err, get_or_err_with_context,
     management_api::MgmtApi,
-    model::{FunctionMap, Model},
+    model::{FunctionMap, Model, OperatorFunction},
     rbac::{DefaultRoleManager, RoleManager},
     register_g_function,
     util::{escape_assertion, escape_eval},
     <span class="prelude-ty">Result</span>,
 };
 
-<span class="attr">#[cfg(any(feature = <span class="string">&quot;logging&quot;</span>, feature = <span class="string">&quot;watcher&quot;</span>))]
+<span class="attr">#[cfg(any(feature = <span class="string">"logging"</span>, feature = <span class="string">"watcher"</span>))]
 </span><span class="kw">use </span><span class="kw">crate</span>::emitter::notify_logger_and_watcher;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;watcher&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"watcher"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::watcher::Watcher;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"logging"</span>)]
 </span><span class="kw">use crate</span>::{DefaultLogger, Logger};
 
 <span class="kw">use </span>async_trait::async_trait;
@@ -1604,14 +1621,14 @@
     Dynamic, Engine, EvalAltResult, ImmutableString, Scope,
 };
 
-<span class="macro">def_package! </span>{
+<span class="macro">def_package!</span> {
     <span class="kw">pub </span>CasbinPackage(lib) {
         ArithmeticPackage::init(lib);
         LogicPackage::init(lib);
         BasicArrayPackage::init(lib);
         BasicMapPackage::init(lib);
 
-        lib.set_native_fn(<span class="string">&quot;escape_assertion&quot;</span>, |s: ImmutableString| {
+        lib.set_native_fn(<span class="string">"escape_assertion"</span>, |s: ImmutableString| {
             <span class="prelude-val">Ok</span>(escape_assertion(<span class="kw-2">&amp;</span>s))
         });
     }
@@ -1633,13 +1650,13 @@
     enabled: bool,
     auto_save: bool,
     auto_build_role_links: bool,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;watcher&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"watcher"</span>)]
     </span>auto_notify_watcher: bool,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;watcher&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"watcher"</span>)]
     </span>watcher: <span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span>Watcher&gt;&gt;,
     events: HashMap&lt;Event, Vec&lt;EventCallback&gt;&gt;,
     engine: Engine,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"logging"</span>)]
     </span>logger: Box&lt;<span class="kw">dyn </span>Logger&gt;,
 }
 
@@ -1653,15 +1670,15 @@
 <span class="kw">impl </span>EnforceContext {
     <span class="kw">pub fn </span>new(suffix: <span class="kw-2">&amp;</span>str) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            r_type: <span class="macro">format!</span>(<span class="string">&quot;r{}&quot;</span>, suffix),
-            p_type: <span class="macro">format!</span>(<span class="string">&quot;p{}&quot;</span>, suffix),
-            e_type: <span class="macro">format!</span>(<span class="string">&quot;e{}&quot;</span>, suffix),
-            m_type: <span class="macro">format!</span>(<span class="string">&quot;m{}&quot;</span>, suffix),
+            r_type: <span class="macro">format!</span>(<span class="string">"r{}"</span>, suffix),
+            p_type: <span class="macro">format!</span>(<span class="string">"p{}"</span>, suffix),
+            e_type: <span class="macro">format!</span>(<span class="string">"e{}"</span>, suffix),
+            m_type: <span class="macro">format!</span>(<span class="string">"m{}"</span>, suffix),
         }
     }
     <span class="kw">pub fn </span>get_cache_key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
         <span class="macro">format!</span>(
-            <span class="string">&quot;EnforceContext{{{}-{}-{}-{}}}&quot;</span>,
+            <span class="string">"EnforceContext{{{}-{}-{}-{}}}"</span>,
             <span class="kw-2">&amp;</span><span class="self">self</span>.r_type, <span class="kw-2">&amp;</span><span class="self">self</span>.p_type, <span class="kw-2">&amp;</span><span class="self">self</span>.e_type, <span class="kw-2">&amp;</span><span class="self">self</span>.m_type,
         )
     }
@@ -1696,10 +1713,10 @@
 
         <span class="kw">let </span><span class="kw-2">mut </span>scope: Scope = Scope::new();
 
-        <span class="kw">let </span>r_ast = <span class="macro">get_or_err!</span>(<span class="self">self</span>, <span class="string">&quot;r&quot;</span>, ModelError::R, <span class="string">&quot;request&quot;</span>);
-        <span class="kw">let </span>p_ast = <span class="macro">get_or_err!</span>(<span class="self">self</span>, <span class="string">&quot;p&quot;</span>, ModelError::P, <span class="string">&quot;policy&quot;</span>);
-        <span class="kw">let </span>m_ast = <span class="macro">get_or_err!</span>(<span class="self">self</span>, <span class="string">&quot;m&quot;</span>, ModelError::M, <span class="string">&quot;matcher&quot;</span>);
-        <span class="kw">let </span>e_ast = <span class="macro">get_or_err!</span>(<span class="self">self</span>, <span class="string">&quot;e&quot;</span>, ModelError::E, <span class="string">&quot;effector&quot;</span>);
+        <span class="kw">let </span>r_ast = <span class="macro">get_or_err!</span>(<span class="self">self</span>, <span class="string">"r"</span>, ModelError::R, <span class="string">"request"</span>);
+        <span class="kw">let </span>p_ast = <span class="macro">get_or_err!</span>(<span class="self">self</span>, <span class="string">"p"</span>, ModelError::P, <span class="string">"policy"</span>);
+        <span class="kw">let </span>m_ast = <span class="macro">get_or_err!</span>(<span class="self">self</span>, <span class="string">"m"</span>, ModelError::M, <span class="string">"matcher"</span>);
+        <span class="kw">let </span>e_ast = <span class="macro">get_or_err!</span>(<span class="self">self</span>, <span class="string">"e"</span>, ModelError::E, <span class="string">"effector"</span>);
 
         <span class="kw">if </span>r_ast.tokens.len() != rvals.len() {
             <span class="kw">return </span><span class="prelude-val">Err</span>(RequestError::UnmatchRequestDefinition(
@@ -1759,12 +1776,12 @@
             <span class="kw">let </span>eval_result = <span class="self">self
                 </span>.engine
                 .eval_ast_with_scope::&lt;bool&gt;(<span class="kw-2">&amp;mut </span>scope, <span class="kw-2">&amp;</span>m_ast_compiled)<span class="question-mark">?</span>;
-            <span class="kw">let </span>eft = <span class="kw">match </span>p_ast.tokens.iter().position(|x| x == <span class="string">&quot;p_eft&quot;</span>) {
+            <span class="kw">let </span>eft = <span class="kw">match </span>p_ast.tokens.iter().position(|x| x == <span class="string">"p_eft"</span>) {
                 <span class="prelude-val">Some</span>(j) <span class="kw">if </span>eval_result =&gt; {
                     <span class="kw">let </span>p_eft = <span class="kw-2">&amp;</span>pvals[j];
-                    <span class="kw">if </span>p_eft == <span class="string">&quot;deny&quot; </span>{
+                    <span class="kw">if </span>p_eft == <span class="string">"deny" </span>{
                         EffectKind::Deny
-                    } <span class="kw">else if </span>p_eft == <span class="string">&quot;allow&quot; </span>{
+                    } <span class="kw">else if </span>p_eft == <span class="string">"allow" </span>{
                         EffectKind::Allow
                     } <span class="kw">else </span>{
                         EffectKind::Indeterminate
@@ -1780,11 +1797,11 @@
         }
 
         <span class="prelude-val">Ok</span>((eft_stream.next(), {
-            <span class="attr">#[cfg(feature = <span class="string">&quot;explain&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"explain"</span>)]
             </span>{
                 eft_stream.explain()
             }
-            <span class="attr">#[cfg(not(feature = <span class="string">&quot;explain&quot;</span>))]
+            <span class="attr">#[cfg(not(feature = <span class="string">"explain"</span>))]
             </span>{
                 <span class="prelude-val">None
             </span>}
@@ -1803,31 +1820,31 @@
         <span class="kw">let </span><span class="kw-2">mut </span>scope: Scope = Scope::new();
         <span class="kw">let </span>r_ast = <span class="macro">get_or_err_with_context!</span>(
             <span class="self">self</span>,
-            <span class="string">&quot;r&quot;</span>,
+            <span class="string">"r"</span>,
             <span class="kw-2">&amp;</span>ctx.r_type,
             ModelError::R,
-            <span class="string">&quot;request&quot;
+            <span class="string">"request"
         </span>);
         <span class="kw">let </span>p_ast = <span class="macro">get_or_err_with_context!</span>(
             <span class="self">self</span>,
-            <span class="string">&quot;p&quot;</span>,
+            <span class="string">"p"</span>,
             <span class="kw-2">&amp;</span>ctx.p_type,
             ModelError::P,
-            <span class="string">&quot;policy&quot;
+            <span class="string">"policy"
         </span>);
         <span class="kw">let </span>m_ast = <span class="macro">get_or_err_with_context!</span>(
             <span class="self">self</span>,
-            <span class="string">&quot;m&quot;</span>,
+            <span class="string">"m"</span>,
             <span class="kw-2">&amp;</span>ctx.m_type,
             ModelError::M,
-            <span class="string">&quot;matcher&quot;
+            <span class="string">"matcher"
         </span>);
         <span class="kw">let </span>e_ast = <span class="macro">get_or_err_with_context!</span>(
             <span class="self">self</span>,
-            <span class="string">&quot;e&quot;</span>,
+            <span class="string">"e"</span>,
             <span class="kw-2">&amp;</span>ctx.e_type,
             ModelError::E,
-            <span class="string">&quot;effector&quot;
+            <span class="string">"effector"
         </span>);
 
         <span class="kw">if </span>r_ast.tokens.len() != rvals.len() {
@@ -1888,12 +1905,12 @@
             <span class="kw">let </span>eval_result = <span class="self">self
                 </span>.engine
                 .eval_ast_with_scope::&lt;bool&gt;(<span class="kw-2">&amp;mut </span>scope, <span class="kw-2">&amp;</span>m_ast_compiled)<span class="question-mark">?</span>;
-            <span class="kw">let </span>eft = <span class="kw">match </span>p_ast.tokens.iter().position(|x| x == <span class="string">&quot;p_eft&quot;</span>) {
+            <span class="kw">let </span>eft = <span class="kw">match </span>p_ast.tokens.iter().position(|x| x == <span class="string">"p_eft"</span>) {
                 <span class="prelude-val">Some</span>(j) <span class="kw">if </span>eval_result =&gt; {
                     <span class="kw">let </span>p_eft = <span class="kw-2">&amp;</span>pvals[j];
-                    <span class="kw">if </span>p_eft == <span class="string">&quot;deny&quot; </span>{
+                    <span class="kw">if </span>p_eft == <span class="string">"deny" </span>{
                         EffectKind::Deny
-                    } <span class="kw">else if </span>p_eft == <span class="string">&quot;allow&quot; </span>{
+                    } <span class="kw">else if </span>p_eft == <span class="string">"allow" </span>{
                         EffectKind::Allow
                     } <span class="kw">else </span>{
                         EffectKind::Indeterminate
@@ -1909,19 +1926,36 @@
         }
 
         <span class="prelude-val">Ok</span>((eft_stream.next(), {
-            <span class="attr">#[cfg(feature = <span class="string">&quot;explain&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"explain"</span>)]
             </span>{
                 eft_stream.explain()
             }
-            <span class="attr">#[cfg(not(feature = <span class="string">&quot;explain&quot;</span>))]
+            <span class="attr">#[cfg(not(feature = <span class="string">"explain"</span>))]
             </span>{
                 <span class="prelude-val">None
             </span>}
         }))
     }
 
+    <span class="kw">fn </span>register_function(engine: <span class="kw-2">&amp;mut </span>Engine, key: <span class="kw-2">&amp;</span>str, f: OperatorFunction) {
+        <span class="kw">match </span>f {
+            OperatorFunction::Arg0(func) =&gt; {
+                engine.register_fn(key, func);
+            }
+            OperatorFunction::Arg1(func) =&gt; {
+                engine.register_fn(key, func);
+            }
+            OperatorFunction::Arg2(func) =&gt; {
+                engine.register_fn(key, func);
+            }
+            OperatorFunction::Arg3(func) =&gt; {
+                engine.register_fn(key, func);
+            }
+        }
+    }
+
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>register_g_functions(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(ast_map) = <span class="self">self</span>.model.get_model().get(<span class="string">&quot;g&quot;</span>) {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(ast_map) = <span class="self">self</span>.model.get_model().get(<span class="string">"g"</span>) {
             <span class="kw">for </span>(fname, ast) <span class="kw">in </span>ast_map {
                 <span class="macro">register_g_function!</span>(<span class="self">self</span>, fname, ast);
             }
@@ -1949,7 +1983,7 @@
         engine.register_global_module(CASBIN_PACKAGE.as_shared_module());
 
         <span class="kw">for </span>(key, <span class="kw-2">&amp;</span>func) <span class="kw">in </span>fm.get_functions() {
-            engine.register_fn(key, func);
+            <span class="self">Self</span>::register_function(<span class="kw-2">&amp;mut </span>engine, key, func);
         }
 
         <span class="kw">let </span><span class="kw-2">mut </span>e = <span class="self">Self </span>{
@@ -1961,17 +1995,17 @@
             enabled: <span class="bool-val">true</span>,
             auto_save: <span class="bool-val">true</span>,
             auto_build_role_links: <span class="bool-val">true</span>,
-            <span class="attr">#[cfg(feature = <span class="string">&quot;watcher&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"watcher"</span>)]
             </span>auto_notify_watcher: <span class="bool-val">true</span>,
-            <span class="attr">#[cfg(feature = <span class="string">&quot;watcher&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"watcher"</span>)]
             </span>watcher: <span class="prelude-val">None</span>,
             events: HashMap::new(),
             engine,
-            <span class="attr">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"logging"</span>)]
             </span>logger: Box::new(DefaultLogger::default()),
         };
 
-        <span class="attr">#[cfg(any(feature = <span class="string">&quot;logging&quot;</span>, feature = <span class="string">&quot;watcher&quot;</span>))]
+        <span class="attr">#[cfg(any(feature = <span class="string">"logging"</span>, feature = <span class="string">"watcher"</span>))]
         </span>e.on(Event::PolicyChange, notify_logger_and_watcher);
 
         e.register_g_functions()<span class="question-mark">?</span>;
@@ -1994,13 +2028,9 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>add_function(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        fname: <span class="kw-2">&amp;</span>str,
-        f: <span class="kw">fn</span>(ImmutableString, ImmutableString) -&gt; bool,
-    ) {
+    </span><span class="kw">fn </span>add_function(<span class="kw-2">&amp;mut </span><span class="self">self</span>, fname: <span class="kw-2">&amp;</span>str, f: OperatorFunction) {
         <span class="self">self</span>.fm.add_function(fname, f);
-        <span class="self">self</span>.engine.register_fn(fname, f);
+        <span class="self">Self</span>::register_function(<span class="kw-2">&amp;mut </span><span class="self">self</span>.engine, fname, f);
     }
 
     <span class="attr">#[inline]
@@ -2023,25 +2053,25 @@
         <span class="kw-2">&amp;mut *</span><span class="self">self</span>.adapter
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;watcher&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"watcher"</span>)]
     #[inline]
     </span><span class="kw">fn </span>set_watcher(<span class="kw-2">&amp;mut </span><span class="self">self</span>, w: Box&lt;<span class="kw">dyn </span>Watcher&gt;) {
         <span class="self">self</span>.watcher = <span class="prelude-val">Some</span>(w);
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"logging"</span>)]
     #[inline]
     </span><span class="kw">fn </span>get_logger(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw">dyn </span>Logger {
         <span class="kw-2">&amp;*</span><span class="self">self</span>.logger
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"logging"</span>)]
     #[inline]
     </span><span class="kw">fn </span>set_logger(<span class="kw-2">&amp;mut </span><span class="self">self</span>, l: Box&lt;<span class="kw">dyn </span>Logger&gt;) {
         <span class="self">self</span>.logger = l;
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;watcher&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"watcher"</span>)]
     #[inline]
     </span><span class="kw">fn </span>get_watcher(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">dyn </span>Watcher&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>watcher) = <span class="self">self</span>.watcher {
@@ -2051,7 +2081,7 @@
         </span>}
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;watcher&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"watcher"</span>)]
     #[inline]
     </span><span class="kw">fn </span>get_mut_watcher(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Watcher&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>watcher) = <span class="self">self</span>.watcher {
@@ -2096,29 +2126,29 @@
         <span class="self">self</span>.eft = e;
     }
 
-    <span class="doccomment">/// Enforce decides whether a &quot;subject&quot; can access a &quot;object&quot; with the operation &quot;action&quot;,
+    <span class="doccomment">/// Enforce decides whether a "subject" can access a "object" with the operation "action",
     /// input parameters are usually: (sub, obj, act).
     ///
     /// # Examples
     /// ```
     /// use casbin::prelude::*;
-    /// #[cfg(feature = &quot;runtime-async-std&quot;)]
+    /// #[cfg(feature = "runtime-async-std")]
     /// #[async_std::main]
     /// async fn main() -&gt; Result&lt;()&gt; {
-    ///     let mut e = Enforcer::new(&quot;examples/basic_model.conf&quot;, &quot;examples/basic_policy.csv&quot;).await?;
-    ///     assert_eq!(true, e.enforce((&quot;alice&quot;, &quot;data1&quot;, &quot;read&quot;))?);
+    ///     let mut e = Enforcer::new("examples/basic_model.conf", "examples/basic_policy.csv").await?;
+    ///     assert_eq!(true, e.enforce(("alice", "data1", "read"))?);
     ///     Ok(())
     /// }
     ///
-    /// #[cfg(feature = &quot;runtime-tokio&quot;)]
+    /// #[cfg(feature = "runtime-tokio")]
     /// #[tokio::main]
     /// async fn main() -&gt; Result&lt;()&gt; {
-    ///     let mut e = Enforcer::new(&quot;examples/basic_model.conf&quot;, &quot;examples/basic_policy.csv&quot;).await?;
-    ///     assert_eq!(true, e.enforce((&quot;alice&quot;, &quot;data1&quot;, &quot;read&quot;))?);
+    ///     let mut e = Enforcer::new("examples/basic_model.conf", "examples/basic_policy.csv").await?;
+    ///     assert_eq!(true, e.enforce(("alice", "data1", "read"))?);
     ///
     ///     Ok(())
     /// }
-    /// #[cfg(all(not(feature = &quot;runtime-async-std&quot;), not(feature = &quot;runtime-tokio&quot;)))]
+    /// #[cfg(all(not(feature = "runtime-async-std"), not(feature = "runtime-tokio")))]
     /// fn main() {}
     /// ```
     </span><span class="kw">fn </span>enforce&lt;ARGS: EnforceArgs&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, rvals: ARGS) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
@@ -2126,7 +2156,7 @@
         <span class="attr">#[allow(unused_variables)]
         </span><span class="kw">let </span>(authorized, indices) = <span class="self">self</span>.private_enforce(<span class="kw-2">&amp;</span>rvals)<span class="question-mark">?</span>;
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"logging"</span>)]
         </span>{
             <span class="self">self</span>.logger.print_enforce_log(
                 rvals.iter().map(|x| x.to_string()).collect(),
@@ -2134,15 +2164,15 @@
                 <span class="bool-val">false</span>,
             );
 
-            <span class="attr">#[cfg(feature = <span class="string">&quot;explain&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"explain"</span>)]
             </span><span class="kw">if let </span><span class="prelude-val">Some</span>(indices) = indices {
-                <span class="kw">let </span>all_rules = <span class="macro">get_or_err!</span>(<span class="self">self</span>, <span class="string">&quot;p&quot;</span>, ModelError::P, <span class="string">&quot;policy&quot;</span>)
+                <span class="kw">let </span>all_rules = <span class="macro">get_or_err!</span>(<span class="self">self</span>, <span class="string">"p"</span>, ModelError::P, <span class="string">"policy"</span>)
                     .get_policy();
 
                 <span class="kw">let </span>rules: Vec&lt;String&gt; = indices
                     .into_iter()
                     .filter_map(|y| {
-                        all_rules.iter().nth(y).map(|x| x.join(<span class="string">&quot;, &quot;</span>))
+                        all_rules.iter().nth(y).map(|x| x.join(<span class="string">", "</span>))
                     })
                     .collect();
 
@@ -2152,7 +2182,7 @@
 
         <span class="prelude-val">Ok</span>(authorized)
     }
-    <span class="doccomment">/// Enforce decides whether a &quot;subject&quot; can access a &quot;object&quot; with the operation &quot;action&quot;,
+    <span class="doccomment">/// Enforce decides whether a "subject" can access a "object" with the operation "action",
     /// input parameters are usually: (sub, obj, act).
     /// this function will add suffix to each model eg. r2, p2, e2, m2, g2,
     ///
@@ -2161,27 +2191,27 @@
     /// use casbin::prelude::*;
     /// use casbin::EnforceContext;
     ///
-    /// #[cfg(feature = &quot;runtime-async-std&quot;)]
+    /// #[cfg(feature = "runtime-async-std")]
     /// #[async_std::main]
     /// async fn main() -&gt; Result&lt;()&gt; {
-    ///     let mut e = Enforcer::new(&quot;examples/multi_section_model.conf&quot;, &quot;examples/multi_section_policy.csv&quot;).await?;
-    ///     assert_eq!(true, e.enforce((&quot;alice&quot;, &quot;read&quot;, &quot;project1&quot;))?);
-    ///     let ctx = EnforceContext::new(&quot;2&quot;);
-    ///     assert_eq!(true, e.enforce_with_context(ctx, (&quot;james&quot;, &quot;execute&quot;))?);
+    ///     let mut e = Enforcer::new("examples/multi_section_model.conf", "examples/multi_section_policy.csv").await?;
+    ///     assert_eq!(true, e.enforce(("alice", "read", "project1"))?);
+    ///     let ctx = EnforceContext::new("2");
+    ///     assert_eq!(true, e.enforce_with_context(ctx, ("james", "execute"))?);
     ///     Ok(())
     /// }
     ///
-    /// #[cfg(feature = &quot;runtime-tokio&quot;)]
+    /// #[cfg(feature = "runtime-tokio")]
     /// #[tokio::main]
     /// async fn main() -&gt; Result&lt;()&gt; {
-    ///     let mut e = Enforcer::new(&quot;examples/multi_section_model.conf&quot;, &quot;examples/multi_section_policy.csv&quot;).await?;
-    ///     assert_eq!(true, e.enforce((&quot;alice&quot;, &quot;read&quot;, &quot;project1&quot;))?);
-    ///     let ctx = EnforceContext::new(&quot;2&quot;);
-    ///     assert_eq!(true, e.enforce_with_context(ctx, (&quot;james&quot;, &quot;execute&quot;))?);
+    ///     let mut e = Enforcer::new("examples/multi_section_model.conf", "examples/multi_section_policy.csv").await?;
+    ///     assert_eq!(true, e.enforce(("alice", "read", "project1"))?);
+    ///     let ctx = EnforceContext::new("2");
+    ///     assert_eq!(true, e.enforce_with_context(ctx, ("james", "execute"))?);
     ///
     ///     Ok(())
     /// }
-    /// #[cfg(all(not(feature = &quot;runtime-async-std&quot;), not(feature = &quot;runtime-tokio&quot;)))]
+    /// #[cfg(all(not(feature = "runtime-async-std"), not(feature = "runtime-tokio")))]
     /// fn main() {}
     /// ```
 
@@ -2195,7 +2225,7 @@
         </span><span class="kw">let </span>(authorized, indices) =
             <span class="self">self</span>.private_enforce_with_context(ctx, <span class="kw-2">&amp;</span>rvals)<span class="question-mark">?</span>;
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"logging"</span>)]
         </span>{
             <span class="self">self</span>.logger.print_enforce_log(
                 rvals.iter().map(|x| x.to_string()).collect(),
@@ -2203,15 +2233,15 @@
                 <span class="bool-val">false</span>,
             );
 
-            <span class="attr">#[cfg(feature = <span class="string">&quot;explain&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"explain"</span>)]
             </span><span class="kw">if let </span><span class="prelude-val">Some</span>(indices) = indices {
-                <span class="kw">let </span>all_rules = <span class="macro">get_or_err!</span>(<span class="self">self</span>, <span class="string">&quot;p&quot;</span>, ModelError::P, <span class="string">&quot;policy&quot;</span>)
+                <span class="kw">let </span>all_rules = <span class="macro">get_or_err!</span>(<span class="self">self</span>, <span class="string">"p"</span>, ModelError::P, <span class="string">"policy"</span>)
                     .get_policy();
 
                 <span class="kw">let </span>rules: Vec&lt;String&gt; = indices
                     .into_iter()
                     .filter_map(|y| {
-                        all_rules.iter().nth(y).map(|x| x.join(<span class="string">&quot;, &quot;</span>))
+                        all_rules.iter().nth(y).map(|x| x.join(<span class="string">", "</span>))
                     })
                     .collect();
 
@@ -2233,7 +2263,7 @@
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;incremental&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"incremental"</span>)]
     </span><span class="kw">fn </span>build_incremental_role_links(<span class="kw-2">&amp;mut </span><span class="self">self</span>, d: EventData) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="self">self</span>.model
             .build_incremental_role_links(Arc::clone(<span class="kw-2">&amp;</span><span class="self">self</span>.rm), d)<span class="question-mark">?</span>;
@@ -2252,7 +2282,7 @@
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">async fn </span>load_filtered_policy&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, f: Filter&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+    <span class="kw">async fn </span>load_filtered_policy&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, f: Filter&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="self">self</span>.model.clear_policy();
         <span class="self">self</span>.adapter
             .load_filtered_policy(<span class="kw-2">&amp;mut *</span><span class="self">self</span>.model, f)
@@ -2276,7 +2306,7 @@
     }
 
     <span class="kw">async fn </span>save_policy(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        <span class="macro">assert!</span>(!<span class="self">self</span>.is_filtered(), <span class="string">&quot;cannot save filtered policy&quot;</span>);
+        <span class="macro">assert!</span>(!<span class="self">self</span>.is_filtered(), <span class="string">"cannot save filtered policy"</span>);
 
         <span class="self">self</span>.adapter.save_policy(<span class="kw-2">&amp;mut *</span><span class="self">self</span>.model).<span class="kw">await</span><span class="question-mark">?</span>;
 
@@ -2285,7 +2315,7 @@
 
         policies.extend(gpolicies);
 
-        <span class="attr">#[cfg(any(feature = <span class="string">&quot;logging&quot;</span>, feature = <span class="string">&quot;watcher&quot;</span>))]
+        <span class="attr">#[cfg(any(feature = <span class="string">"logging"</span>, feature = <span class="string">"watcher"</span>))]
         </span><span class="self">self</span>.emit(Event::PolicyChange, EventData::SavePolicy(policies));
 
         <span class="prelude-val">Ok</span>(())
@@ -2298,7 +2328,7 @@
         }
         <span class="self">self</span>.model.clear_policy();
 
-        <span class="attr">#[cfg(any(feature = <span class="string">&quot;logging&quot;</span>, feature = <span class="string">&quot;watcher&quot;</span>))]
+        <span class="attr">#[cfg(any(feature = <span class="string">"logging"</span>, feature = <span class="string">"watcher"</span>))]
         </span><span class="self">self</span>.emit(Event::PolicyChange, EventData::ClearPolicy);
 
         <span class="prelude-val">Ok</span>(())
@@ -2308,11 +2338,11 @@
     </span><span class="kw">fn </span>enable_enforce(<span class="kw-2">&amp;mut </span><span class="self">self</span>, enabled: bool) {
         <span class="self">self</span>.enabled = enabled;
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"logging"</span>)]
         </span><span class="self">self</span>.logger.print_status_log(enabled);
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;logging&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"logging"</span>)]
     #[inline]
     </span><span class="kw">fn </span>enable_log(<span class="kw-2">&amp;mut </span><span class="self">self</span>, enabled: bool) {
         <span class="self">self</span>.logger.enable_log(enabled);
@@ -2328,7 +2358,7 @@
         <span class="self">self</span>.auto_build_role_links = auto_build_role_links;
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;watcher&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"watcher"</span>)]
     #[inline]
     </span><span class="kw">fn </span>enable_auto_notify_watcher(<span class="kw-2">&amp;mut </span><span class="self">self</span>, auto_notify_watcher: bool) {
         <span class="kw">if </span>!auto_notify_watcher {
@@ -2345,7 +2375,7 @@
         <span class="self">self</span>.auto_save
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;watcher&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"watcher"</span>)]
     #[inline]
     </span><span class="kw">fn </span>has_auto_notify_watcher_enabled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.auto_notify_watcher
@@ -2376,36 +2406,36 @@
         <span class="macro">assert!</span>(is_sync::&lt;Enforcer&gt;());
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_enforcer_swap_adapter_type() {
         <span class="kw">let </span><span class="kw-2">mut </span>m = DefaultModel::default();
-        m.add_def(<span class="string">&quot;r&quot;</span>, <span class="string">&quot;r&quot;</span>, <span class="string">&quot;sub, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;p&quot;</span>, <span class="string">&quot;p&quot;</span>, <span class="string">&quot;sub, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;e&quot;</span>, <span class="string">&quot;e&quot;</span>, <span class="string">&quot;some(where (p.eft == allow))&quot;</span>);
+        m.add_def(<span class="string">"r"</span>, <span class="string">"r"</span>, <span class="string">"sub, obj, act"</span>);
+        m.add_def(<span class="string">"p"</span>, <span class="string">"p"</span>, <span class="string">"sub, obj, act"</span>);
+        m.add_def(<span class="string">"e"</span>, <span class="string">"e"</span>, <span class="string">"some(where (p.eft == allow))"</span>);
         m.add_def(
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;r.sub == p.sub &amp;&amp; keyMatch(r.obj, p.obj) &amp;&amp; regexMatch(r.act, p.act)&quot;</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"r.sub == p.sub &amp;&amp; keyMatch(r.obj, p.obj) &amp;&amp; regexMatch(r.act, p.act)"</span>,
         );
 
-        <span class="kw">let </span>file = FileAdapter::new(<span class="string">&quot;examples/basic_policy.csv&quot;</span>);
+        <span class="kw">let </span>file = FileAdapter::new(<span class="string">"examples/basic_policy.csv"</span>);
         <span class="kw">let </span>mem = MemoryAdapter::default();
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m, file).<span class="kw">await</span>.unwrap();
         <span class="comment">// this should fail since FileAdapter has basically no add_policy
         </span><span class="macro">assert!</span>(e
             .adapter
             .add_policy(
-                <span class="string">&quot;p&quot;</span>,
-                <span class="string">&quot;p&quot;</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>.into(), <span class="string">&quot;data&quot;</span>.into(), <span class="string">&quot;read&quot;</span>.into()]
+                <span class="string">"p"</span>,
+                <span class="string">"p"</span>,
+                <span class="macro">vec!</span>[<span class="string">"alice"</span>.into(), <span class="string">"data"</span>.into(), <span class="string">"read"</span>.into()]
             )
             .<span class="kw">await
             </span>.unwrap());
@@ -2414,205 +2444,205 @@
         </span><span class="macro">assert!</span>(e
             .adapter
             .add_policy(
-                <span class="string">&quot;p&quot;</span>,
-                <span class="string">&quot;p&quot;</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>.into(), <span class="string">&quot;data&quot;</span>.into(), <span class="string">&quot;read&quot;</span>.into()]
+                <span class="string">"p"</span>,
+                <span class="string">"p"</span>,
+                <span class="macro">vec!</span>[<span class="string">"alice"</span>.into(), <span class="string">"data"</span>.into(), <span class="string">"read"</span>.into()]
             )
             .<span class="kw">await
             </span>.unwrap())
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_key_match_model_in_memory() {
         <span class="kw">let </span><span class="kw-2">mut </span>m = DefaultModel::default();
-        m.add_def(<span class="string">&quot;r&quot;</span>, <span class="string">&quot;r&quot;</span>, <span class="string">&quot;sub, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;p&quot;</span>, <span class="string">&quot;p&quot;</span>, <span class="string">&quot;sub, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;e&quot;</span>, <span class="string">&quot;e&quot;</span>, <span class="string">&quot;some(where (p.eft == allow))&quot;</span>);
+        m.add_def(<span class="string">"r"</span>, <span class="string">"r"</span>, <span class="string">"sub, obj, act"</span>);
+        m.add_def(<span class="string">"p"</span>, <span class="string">"p"</span>, <span class="string">"sub, obj, act"</span>);
+        m.add_def(<span class="string">"e"</span>, <span class="string">"e"</span>, <span class="string">"some(where (p.eft == allow))"</span>);
         m.add_def(
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;r.sub == p.sub &amp;&amp; keyMatch(r.obj, p.obj) &amp;&amp; regexMatch(r.act, p.act)&quot;</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"r.sub == p.sub &amp;&amp; keyMatch(r.obj, p.obj) &amp;&amp; regexMatch(r.act, p.act)"</span>,
         );
 
-        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">&quot;examples/keymatch_policy.csv&quot;</span>);
+        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">"examples/keymatch_policy.csv"</span>);
         <span class="kw">let </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
-            e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/alice_data/resource1&quot;</span>, <span class="string">&quot;GET&quot;</span>))
+            e.enforce((<span class="string">"alice"</span>, <span class="string">"/alice_data/resource1"</span>, <span class="string">"GET"</span>))
                 .unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
-            e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/alice_data/resource1&quot;</span>, <span class="string">&quot;POST&quot;</span>))
+            e.enforce((<span class="string">"alice"</span>, <span class="string">"/alice_data/resource1"</span>, <span class="string">"POST"</span>))
                 .unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
-            e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/alice_data/resource2&quot;</span>, <span class="string">&quot;GET&quot;</span>))
+            e.enforce((<span class="string">"alice"</span>, <span class="string">"/alice_data/resource2"</span>, <span class="string">"GET"</span>))
                 .unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/alice_data/resource2&quot;</span>, <span class="string">&quot;POST&quot;</span>))
+            e.enforce((<span class="string">"alice"</span>, <span class="string">"/alice_data/resource2"</span>, <span class="string">"POST"</span>))
                 .unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/bob_data/resource1&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap()
+            e.enforce((<span class="string">"alice"</span>, <span class="string">"/bob_data/resource1"</span>, <span class="string">"GET"</span>)).unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/bob_data/resource1&quot;</span>, <span class="string">&quot;POST&quot;</span>)).unwrap()
+            e.enforce((<span class="string">"alice"</span>, <span class="string">"/bob_data/resource1"</span>, <span class="string">"POST"</span>)).unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/bob_data/resource2&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap()
+            e.enforce((<span class="string">"alice"</span>, <span class="string">"/bob_data/resource2"</span>, <span class="string">"GET"</span>)).unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/bob_data/resource2&quot;</span>, <span class="string">&quot;POST&quot;</span>)).unwrap()
+            e.enforce((<span class="string">"alice"</span>, <span class="string">"/bob_data/resource2"</span>, <span class="string">"POST"</span>)).unwrap()
         );
 
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/alice_data/resource1&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap()
+            e.enforce((<span class="string">"bob"</span>, <span class="string">"/alice_data/resource1"</span>, <span class="string">"GET"</span>)).unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/alice_data/resource1&quot;</span>, <span class="string">&quot;POST&quot;</span>)).unwrap()
+            e.enforce((<span class="string">"bob"</span>, <span class="string">"/alice_data/resource1"</span>, <span class="string">"POST"</span>)).unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
-            e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/alice_data/resource2&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap()
+            e.enforce((<span class="string">"bob"</span>, <span class="string">"/alice_data/resource2"</span>, <span class="string">"GET"</span>)).unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/alice_data/resource2&quot;</span>, <span class="string">&quot;POST&quot;</span>)).unwrap()
+            e.enforce((<span class="string">"bob"</span>, <span class="string">"/alice_data/resource2"</span>, <span class="string">"POST"</span>)).unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/bob_data/resource1&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap()
+            e.enforce((<span class="string">"bob"</span>, <span class="string">"/bob_data/resource1"</span>, <span class="string">"GET"</span>)).unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
-            e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/bob_data/resource1&quot;</span>, <span class="string">&quot;POST&quot;</span>)).unwrap()
+            e.enforce((<span class="string">"bob"</span>, <span class="string">"/bob_data/resource1"</span>, <span class="string">"POST"</span>)).unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/bob_data/resource2&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap()
+            e.enforce((<span class="string">"bob"</span>, <span class="string">"/bob_data/resource2"</span>, <span class="string">"GET"</span>)).unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
-            e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/bob_data/resource2&quot;</span>, <span class="string">&quot;POST&quot;</span>)).unwrap()
+            e.enforce((<span class="string">"bob"</span>, <span class="string">"/bob_data/resource2"</span>, <span class="string">"POST"</span>)).unwrap()
         );
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;cathy&quot;</span>, <span class="string">&quot;/cathy_data&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;cathy&quot;</span>, <span class="string">&quot;/cathy_data&quot;</span>, <span class="string">&quot;POST&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"cathy"</span>, <span class="string">"/cathy_data"</span>, <span class="string">"GET"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"cathy"</span>, <span class="string">"/cathy_data"</span>, <span class="string">"POST"</span>)).unwrap());
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.enforce((<span class="string">&quot;cathy&quot;</span>, <span class="string">&quot;/cathy_data&quot;</span>, <span class="string">&quot;DELETE&quot;</span>)).unwrap()
+            e.enforce((<span class="string">"cathy"</span>, <span class="string">"/cathy_data"</span>, <span class="string">"DELETE"</span>)).unwrap()
         );
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_key_match_model_in_memory_deny() {
         <span class="kw">let </span><span class="kw-2">mut </span>m = DefaultModel::default();
-        m.add_def(<span class="string">&quot;r&quot;</span>, <span class="string">&quot;r&quot;</span>, <span class="string">&quot;sub, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;p&quot;</span>, <span class="string">&quot;p&quot;</span>, <span class="string">&quot;sub, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;e&quot;</span>, <span class="string">&quot;e&quot;</span>, <span class="string">&quot;!some(where (p.eft == deny))&quot;</span>);
+        m.add_def(<span class="string">"r"</span>, <span class="string">"r"</span>, <span class="string">"sub, obj, act"</span>);
+        m.add_def(<span class="string">"p"</span>, <span class="string">"p"</span>, <span class="string">"sub, obj, act"</span>);
+        m.add_def(<span class="string">"e"</span>, <span class="string">"e"</span>, <span class="string">"!some(where (p.eft == deny))"</span>);
         m.add_def(
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;r.sub == p.sub &amp;&amp; keyMatch(r.obj, p.obj) &amp;&amp; regexMatch(r.act, p.act)&quot;</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"r.sub == p.sub &amp;&amp; keyMatch(r.obj, p.obj) &amp;&amp; regexMatch(r.act, p.act)"</span>,
         );
 
-        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">&quot;examples/keymatch_policy.csv&quot;</span>);
+        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">"examples/keymatch_policy.csv"</span>);
         <span class="kw">let </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
-            e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/alice_data/resource2&quot;</span>, <span class="string">&quot;POST&quot;</span>))
+            e.enforce((<span class="string">"alice"</span>, <span class="string">"/alice_data/resource2"</span>, <span class="string">"POST"</span>))
                 .unwrap()
         );
     }
 
     <span class="kw">use </span><span class="kw">crate</span>::RbacApi;
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_rbac_model_in_memory_indeterminate() {
         <span class="kw">let </span><span class="kw-2">mut </span>m = DefaultModel::default();
-        m.add_def(<span class="string">&quot;r&quot;</span>, <span class="string">&quot;r&quot;</span>, <span class="string">&quot;sub, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;p&quot;</span>, <span class="string">&quot;p&quot;</span>, <span class="string">&quot;sub, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;g&quot;</span>, <span class="string">&quot;g&quot;</span>, <span class="string">&quot;_, _&quot;</span>);
-        m.add_def(<span class="string">&quot;e&quot;</span>, <span class="string">&quot;e&quot;</span>, <span class="string">&quot;some(where (p.eft == allow))&quot;</span>);
+        m.add_def(<span class="string">"r"</span>, <span class="string">"r"</span>, <span class="string">"sub, obj, act"</span>);
+        m.add_def(<span class="string">"p"</span>, <span class="string">"p"</span>, <span class="string">"sub, obj, act"</span>);
+        m.add_def(<span class="string">"g"</span>, <span class="string">"g"</span>, <span class="string">"_, _"</span>);
+        m.add_def(<span class="string">"e"</span>, <span class="string">"e"</span>, <span class="string">"some(where (p.eft == allow))"</span>);
         m.add_def(
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;g(r.sub, p.sub) &amp;&amp; r.obj == p.obj &amp;&amp; r.act == p.act&quot;</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"g(r.sub, p.sub) &amp;&amp; r.obj == p.obj &amp;&amp; r.act == p.act"</span>,
         );
 
         <span class="kw">let </span>adapter = MemoryAdapter::default();
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
         e.add_permission_for_user(
-            <span class="string">&quot;alice&quot;</span>,
-            <span class="macro">vec!</span>[<span class="string">&quot;data1&quot;</span>, <span class="string">&quot;invalid&quot;</span>]
+            <span class="string">"alice"</span>,
+            <span class="macro">vec!</span>[<span class="string">"data1"</span>, <span class="string">"invalid"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
         )
         .<span class="kw">await
         </span>.unwrap();
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_rbac_model_in_memory() {
         <span class="kw">let </span><span class="kw-2">mut </span>m = DefaultModel::default();
-        m.add_def(<span class="string">&quot;r&quot;</span>, <span class="string">&quot;r&quot;</span>, <span class="string">&quot;sub, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;p&quot;</span>, <span class="string">&quot;p&quot;</span>, <span class="string">&quot;sub, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;g&quot;</span>, <span class="string">&quot;g&quot;</span>, <span class="string">&quot;_, _&quot;</span>);
-        m.add_def(<span class="string">&quot;e&quot;</span>, <span class="string">&quot;e&quot;</span>, <span class="string">&quot;some(where (p.eft == allow))&quot;</span>);
+        m.add_def(<span class="string">"r"</span>, <span class="string">"r"</span>, <span class="string">"sub, obj, act"</span>);
+        m.add_def(<span class="string">"p"</span>, <span class="string">"p"</span>, <span class="string">"sub, obj, act"</span>);
+        m.add_def(<span class="string">"g"</span>, <span class="string">"g"</span>, <span class="string">"_, _"</span>);
+        m.add_def(<span class="string">"e"</span>, <span class="string">"e"</span>, <span class="string">"some(where (p.eft == allow))"</span>);
         m.add_def(
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;g(r.sub, p.sub) &amp;&amp; r.obj == p.obj &amp;&amp; r.act == p.act&quot;</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"g(r.sub, p.sub) &amp;&amp; r.obj == p.obj &amp;&amp; r.act == p.act"</span>,
         );
 
         <span class="kw">let </span>adapter = MemoryAdapter::default();
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
         e.add_permission_for_user(
-            <span class="string">&quot;alice&quot;</span>,
-            <span class="macro">vec!</span>[<span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>]
+            <span class="string">"alice"</span>,
+            <span class="macro">vec!</span>[<span class="string">"data1"</span>, <span class="string">"read"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -2620,8 +2650,8 @@
         .<span class="kw">await
         </span>.unwrap();
         e.add_permission_for_user(
-            <span class="string">&quot;bob&quot;</span>,
-            <span class="macro">vec!</span>[<span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>]
+            <span class="string">"bob"</span>,
+            <span class="macro">vec!</span>[<span class="string">"data2"</span>, <span class="string">"write"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -2629,8 +2659,8 @@
         .<span class="kw">await
         </span>.unwrap();
         e.add_permission_for_user(
-            <span class="string">&quot;data2_admin&quot;</span>,
-            <span class="macro">vec!</span>[<span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>]
+            <span class="string">"data2_admin"</span>,
+            <span class="macro">vec!</span>[<span class="string">"data2"</span>, <span class="string">"read"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -2638,54 +2668,54 @@
         .<span class="kw">await
         </span>.unwrap();
         e.add_permission_for_user(
-            <span class="string">&quot;data2_admin&quot;</span>,
-            <span class="macro">vec!</span>[<span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>]
+            <span class="string">"data2_admin"</span>,
+            <span class="macro">vec!</span>[<span class="string">"data2"</span>, <span class="string">"write"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
         )
         .<span class="kw">await
         </span>.unwrap();
-        e.add_role_for_user(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+        e.add_role_for_user(<span class="string">"alice"</span>, <span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
             .<span class="kw">await
             </span>.unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_not_used_rbac_model_in_memory() {
         <span class="kw">let </span><span class="kw-2">mut </span>m = DefaultModel::default();
-        m.add_def(<span class="string">&quot;r&quot;</span>, <span class="string">&quot;r&quot;</span>, <span class="string">&quot;sub, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;p&quot;</span>, <span class="string">&quot;p&quot;</span>, <span class="string">&quot;sub, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;g&quot;</span>, <span class="string">&quot;g&quot;</span>, <span class="string">&quot;_, _&quot;</span>);
-        m.add_def(<span class="string">&quot;e&quot;</span>, <span class="string">&quot;e&quot;</span>, <span class="string">&quot;some(where (p.eft == allow))&quot;</span>);
+        m.add_def(<span class="string">"r"</span>, <span class="string">"r"</span>, <span class="string">"sub, obj, act"</span>);
+        m.add_def(<span class="string">"p"</span>, <span class="string">"p"</span>, <span class="string">"sub, obj, act"</span>);
+        m.add_def(<span class="string">"g"</span>, <span class="string">"g"</span>, <span class="string">"_, _"</span>);
+        m.add_def(<span class="string">"e"</span>, <span class="string">"e"</span>, <span class="string">"some(where (p.eft == allow))"</span>);
         m.add_def(
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;g(r.sub, p.sub) &amp;&amp; r.obj == p.obj &amp;&amp; r.act == p.act&quot;</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"g(r.sub, p.sub) &amp;&amp; r.obj == p.obj &amp;&amp; r.act == p.act"</span>,
         );
 
         <span class="kw">let </span>adapter = MemoryAdapter::default();
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
         e.add_permission_for_user(
-            <span class="string">&quot;alice&quot;</span>,
-            <span class="macro">vec!</span>[<span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>]
+            <span class="string">"alice"</span>,
+            <span class="macro">vec!</span>[<span class="string">"data1"</span>, <span class="string">"read"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -2693,8 +2723,8 @@
         .<span class="kw">await
         </span>.unwrap();
         e.add_permission_for_user(
-            <span class="string">&quot;bob&quot;</span>,
-            <span class="macro">vec!</span>[<span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>]
+            <span class="string">"bob"</span>,
+            <span class="macro">vec!</span>[<span class="string">"data2"</span>, <span class="string">"write"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -2702,76 +2732,76 @@
         .<span class="kw">await
         </span>.unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;ip&quot;</span>)]
-    #[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(feature = <span class="string">"ip"</span>)]
+    #[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_ip_match_model() {
-        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">&quot;examples/ipmatch_model.conf&quot;</span>)
+        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">"examples/ipmatch_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
 
-        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">&quot;examples/ipmatch_policy.csv&quot;</span>);
+        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">"examples/ipmatch_policy.csv"</span>);
         <span class="kw">let </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
 
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;192.168.2.123&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"192.168.2.123"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
 
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;10.0.0.5&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"10.0.0.5"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
 
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;192.168.2.123&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;192.168.2.123&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;192.168.2.123&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"192.168.2.123"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"192.168.2.123"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"192.168.2.123"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
 
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;192.168.0.123&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;192.168.0.123&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;192.168.0.123&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;192.168.0.123&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"192.168.0.123"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"192.168.0.123"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"192.168.0.123"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"192.168.0.123"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
 
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;10.0.0.5&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;10.0.0.5&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;10.0.0.5&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"10.0.0.5"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"10.0.0.5"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"10.0.0.5"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
 
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;192.168.0.1&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;192.168.0.1&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;192.168.0.1&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;192.168.0.1&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"192.168.0.1"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"192.168.0.1"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"192.168.0.1"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"192.168.0.1"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_enable_auto_save() {
-        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">&quot;examples/basic_model.conf&quot;</span>)
+        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">"examples/basic_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
 
-        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">&quot;examples/basic_policy.csv&quot;</span>);
+        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">"examples/basic_policy.csv"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
         e.enable_auto_save(<span class="bool-val">false</span>);
         e.remove_policy(
-            <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -2780,18 +2810,18 @@
         </span>.unwrap();
         e.load_policy().<span class="kw">await</span>.unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
 
         e.enable_auto_save(<span class="bool-val">true</span>);
         e.remove_policy(
-            <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -2799,27 +2829,27 @@
         .<span class="kw">await
         </span>.unwrap();
         e.load_policy().<span class="kw">await</span>.unwrap();
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_role_links() {
-        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">&quot;examples/rbac_model.conf&quot;</span>)
+        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">"examples/rbac_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
 
@@ -2827,163 +2857,167 @@
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
         e.enable_auto_build_role_links(<span class="bool-val">false</span>);
         e.build_role_links().unwrap();
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;user501&quot;</span>, <span class="string">&quot;data9&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"user501"</span>, <span class="string">"data9"</span>, <span class="string">"read"</span>)).unwrap());
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_get_and_set_model() {
-        <span class="kw">let </span>m1 = DefaultModel::from_file(<span class="string">&quot;examples/basic_model.conf&quot;</span>)
+        <span class="kw">let </span>m1 = DefaultModel::from_file(<span class="string">"examples/basic_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
-        <span class="kw">let </span>adapter1 = FileAdapter::new(<span class="string">&quot;examples/basic_policy.csv&quot;</span>);
+        <span class="kw">let </span>adapter1 = FileAdapter::new(<span class="string">"examples/basic_policy.csv"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m1, adapter1).<span class="kw">await</span>.unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;root&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"root"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
 
-        <span class="kw">let </span>m2 = DefaultModel::from_file(<span class="string">&quot;examples/basic_with_root_model.conf&quot;</span>)
+        <span class="kw">let </span>m2 = DefaultModel::from_file(<span class="string">"examples/basic_with_root_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
-        <span class="kw">let </span>adapter2 = FileAdapter::new(<span class="string">&quot;examples/basic_policy.csv&quot;</span>);
+        <span class="kw">let </span>adapter2 = FileAdapter::new(<span class="string">"examples/basic_policy.csv"</span>);
         <span class="kw">let </span>e2 = Enforcer::new(m2, adapter2).<span class="kw">await</span>.unwrap();
 
         e.model = e2.model;
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;root&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"root"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_get_and_set_adapter_in_mem() {
-        <span class="kw">let </span>m1 = DefaultModel::from_file(<span class="string">&quot;examples/basic_model.conf&quot;</span>)
+        <span class="kw">let </span>m1 = DefaultModel::from_file(<span class="string">"examples/basic_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
-        <span class="kw">let </span>adapter1 = FileAdapter::new(<span class="string">&quot;examples/basic_policy.csv&quot;</span>);
+        <span class="kw">let </span>adapter1 = FileAdapter::new(<span class="string">"examples/basic_policy.csv"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m1, adapter1).<span class="kw">await</span>.unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
 
-        <span class="kw">let </span>m2 = DefaultModel::from_file(<span class="string">&quot;examples/basic_model.conf&quot;</span>)
+        <span class="kw">let </span>m2 = DefaultModel::from_file(<span class="string">"examples/basic_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
-        <span class="kw">let </span>adapter2 = FileAdapter::new(<span class="string">&quot;examples/basic_inverse_policy.csv&quot;</span>);
+        <span class="kw">let </span>adapter2 = FileAdapter::new(<span class="string">"examples/basic_inverse_policy.csv"</span>);
         <span class="kw">let </span>e2 = Enforcer::new(m2, adapter2).<span class="kw">await</span>.unwrap();
 
         e.adapter = e2.adapter;
         e.load_policy().<span class="kw">await</span>.unwrap();
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_keymatch_custom_model() {
         <span class="kw">use </span><span class="kw">crate</span>::model::key_match;
 
-        <span class="kw">let </span>m1 = DefaultModel::from_file(<span class="string">&quot;examples/keymatch_custom_model.conf&quot;</span>)
+        <span class="kw">let </span>m1 = DefaultModel::from_file(<span class="string">"examples/keymatch_custom_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
-        <span class="kw">let </span>adapter1 = FileAdapter::new(<span class="string">&quot;examples/keymatch_policy.csv&quot;</span>);
+        <span class="kw">let </span>adapter1 = FileAdapter::new(<span class="string">"examples/keymatch_policy.csv"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m1, adapter1).<span class="kw">await</span>.unwrap();
 
         e.add_function(
-            <span class="string">&quot;keyMatchCustom&quot;</span>,
-            |s1: ImmutableString, s2: ImmutableString| key_match(<span class="kw-2">&amp;</span>s1, <span class="kw-2">&amp;</span>s2),
+            <span class="string">"keyMatchCustom"</span>,
+            OperatorFunction::Arg2(
+                |s1: ImmutableString, s2: ImmutableString| {
+                    key_match(<span class="kw-2">&amp;</span>s1, <span class="kw-2">&amp;</span>s2).into()
+                },
+            ),
         );
 
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
-            e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/alice_data/123&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap()
+            e.enforce((<span class="string">"alice"</span>, <span class="string">"/alice_data/123"</span>, <span class="string">"GET"</span>)).unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
-            e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/alice_data/resource1&quot;</span>, <span class="string">&quot;POST&quot;</span>))
+            e.enforce((<span class="string">"alice"</span>, <span class="string">"/alice_data/resource1"</span>, <span class="string">"POST"</span>))
                 .unwrap()
         );
 
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
-            e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/alice_data/resource2&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap()
+            e.enforce((<span class="string">"bob"</span>, <span class="string">"/alice_data/resource2"</span>, <span class="string">"GET"</span>)).unwrap()
         );
 
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
-            e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/bob_data/resource1&quot;</span>, <span class="string">&quot;POST&quot;</span>)).unwrap()
+            e.enforce((<span class="string">"bob"</span>, <span class="string">"/bob_data/resource1"</span>, <span class="string">"POST"</span>)).unwrap()
         );
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;cathy&quot;</span>, <span class="string">&quot;/cathy_data&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;cathy&quot;</span>, <span class="string">&quot;/cathy_data&quot;</span>, <span class="string">&quot;POST&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"cathy"</span>, <span class="string">"/cathy_data"</span>, <span class="string">"GET"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"cathy"</span>, <span class="string">"/cathy_data"</span>, <span class="string">"POST"</span>)).unwrap());
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_filtered_file_adapter() {
         <span class="kw">let </span>adapter = FileAdapter::new_filtered_adapter(
-            <span class="string">&quot;examples/rbac_with_domains_policy.csv&quot;</span>,
+            <span class="string">"examples/rbac_with_domains_policy.csv"</span>,
         );
         <span class="kw">let </span><span class="kw-2">mut </span>e =
-            Enforcer::new(<span class="string">&quot;examples/rbac_with_domains_model.conf&quot;</span>, adapter)
+            Enforcer::new(<span class="string">"examples/rbac_with_domains_model.conf"</span>, adapter)
                 .<span class="kw">await
                 </span>.unwrap();
 
         <span class="kw">let </span>filter = Filter {
-            p: <span class="macro">vec!</span>[<span class="string">&quot;&quot;</span>, <span class="string">&quot;domain1&quot;</span>],
-            g: <span class="macro">vec!</span>[<span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;domain1&quot;</span>],
+            p: <span class="macro">vec!</span>[<span class="string">""</span>, <span class="string">"domain1"</span>],
+            g: <span class="macro">vec!</span>[<span class="string">""</span>, <span class="string">""</span>, <span class="string">"domain1"</span>],
         };
 
         e.load_filtered_policy(filter).<span class="kw">await</span>.unwrap();
         <span class="macro">assert_eq!</span>(
-            e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;domain1&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap(),
+            e.enforce((<span class="string">"alice"</span>, <span class="string">"domain1"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap(),
             <span class="bool-val">true
         </span>);
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;domain1&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;domain1&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;domain1&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;domain2&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;domain2&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"alice"</span>, <span class="string">"domain1"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"alice"</span>, <span class="string">"domain1"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"alice"</span>, <span class="string">"domain1"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"bob"</span>, <span class="string">"domain2"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"bob"</span>, <span class="string">"domain2"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_set_role_manager() {
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(
-            <span class="string">&quot;examples/rbac_with_domains_model.conf&quot;</span>,
-            <span class="string">&quot;examples/rbac_with_domains_policy.csv&quot;</span>,
+            <span class="string">"examples/rbac_with_domains_model.conf"</span>,
+            <span class="string">"examples/rbac_with_domains_policy.csv"</span>,
         )
         .<span class="kw">await
         </span>.unwrap();
@@ -2992,32 +3026,32 @@
 
         e.set_role_manager(new_rm).unwrap();
 
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;domain1&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap(),);
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;domain1&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;domain2&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;domain2&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"alice"</span>, <span class="string">"domain1"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap(),);
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"alice"</span>, <span class="string">"domain1"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"bob"</span>, <span class="string">"domain2"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"bob"</span>, <span class="string">"domain2"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_policy_abac1() {
         <span class="kw">use </span>serde::Serialize;
 
         <span class="kw">let </span><span class="kw-2">mut </span>m = DefaultModel::default();
-        m.add_def(<span class="string">&quot;r&quot;</span>, <span class="string">&quot;r&quot;</span>, <span class="string">&quot;sub, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;p&quot;</span>, <span class="string">&quot;p&quot;</span>, <span class="string">&quot;sub_rule, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;e&quot;</span>, <span class="string">&quot;e&quot;</span>, <span class="string">&quot;some(where (p.eft == allow))&quot;</span>);
+        m.add_def(<span class="string">"r"</span>, <span class="string">"r"</span>, <span class="string">"sub, obj, act"</span>);
+        m.add_def(<span class="string">"p"</span>, <span class="string">"p"</span>, <span class="string">"sub_rule, obj, act"</span>);
+        m.add_def(<span class="string">"e"</span>, <span class="string">"e"</span>, <span class="string">"some(where (p.eft == allow))"</span>);
         m.add_def(
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;eval(p.sub_rule) &amp;&amp; r.obj == p.obj &amp;&amp; r.act == p.act&quot;</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"eval(p.sub_rule) &amp;&amp; r.obj == p.obj &amp;&amp; r.act == p.act"</span>,
         );
 
         <span class="kw">let </span>a = MemoryAdapter::default();
@@ -3025,7 +3059,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m, a).<span class="kw">await</span>.unwrap();
 
         e.add_policy(
-            <span class="macro">vec!</span>[<span class="string">&quot;r.sub.age &gt; 18&quot;</span>, <span class="string">&quot;/data1&quot;</span>, <span class="string">&quot;read&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"r.sub.age &gt; 18"</span>, <span class="string">"/data1"</span>, <span class="string">"read"</span>]
                 .into_iter()
                 .map(|x| x.to_string())
                 .collect(),
@@ -3034,19 +3068,19 @@
         </span>.unwrap();
 
         <span class="attr">#[derive(Serialize, Hash)]
-        </span><span class="kw">pub struct </span>Person&lt;<span class="lifetime">&#39;a</span>&gt; {
-            name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+        </span><span class="kw">pub struct </span>Person&lt;<span class="lifetime">'a</span>&gt; {
+            name: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
             age: u8,
         }
 
         <span class="macro">assert_eq!</span>(
             e.enforce((
                 Person {
-                    name: <span class="string">&quot;alice&quot;</span>,
+                    name: <span class="string">"alice"</span>,
                     age: <span class="number">16
                 </span>},
-                <span class="string">&quot;/data1&quot;</span>,
-                <span class="string">&quot;read&quot;
+                <span class="string">"/data1"</span>,
+                <span class="string">"read"
             </span>))
             .unwrap(),
             <span class="bool-val">false
@@ -3054,38 +3088,38 @@
         <span class="macro">assert_eq!</span>(
             e.enforce((
                 Person {
-                    name: <span class="string">&quot;bob&quot;</span>,
+                    name: <span class="string">"bob"</span>,
                     age: <span class="number">19
                 </span>},
-                <span class="string">&quot;/data1&quot;</span>,
-                <span class="string">&quot;read&quot;
+                <span class="string">"/data1"</span>,
+                <span class="string">"read"
             </span>))
             .unwrap(),
             <span class="bool-val">true
         </span>);
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_policy_abac2() {
         <span class="kw">use </span>serde::Serialize;
 
         <span class="kw">let </span><span class="kw-2">mut </span>m = DefaultModel::default();
-        m.add_def(<span class="string">&quot;r&quot;</span>, <span class="string">&quot;r&quot;</span>, <span class="string">&quot;sub, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;p&quot;</span>, <span class="string">&quot;p&quot;</span>, <span class="string">&quot;sub, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;e&quot;</span>, <span class="string">&quot;e&quot;</span>, <span class="string">&quot;some(where (p.eft == allow))&quot;</span>);
-        m.add_def(<span class="string">&quot;g&quot;</span>, <span class="string">&quot;g&quot;</span>, <span class="string">&quot;_, _&quot;</span>);
+        m.add_def(<span class="string">"r"</span>, <span class="string">"r"</span>, <span class="string">"sub, obj, act"</span>);
+        m.add_def(<span class="string">"p"</span>, <span class="string">"p"</span>, <span class="string">"sub, obj, act"</span>);
+        m.add_def(<span class="string">"e"</span>, <span class="string">"e"</span>, <span class="string">"some(where (p.eft == allow))"</span>);
+        m.add_def(<span class="string">"g"</span>, <span class="string">"g"</span>, <span class="string">"_, _"</span>);
         m.add_def(
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;(g(r.sub, p.sub) || eval(p.sub) == true) &amp;&amp; r.act == p.act&quot;</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"(g(r.sub, p.sub) || eval(p.sub) == true) &amp;&amp; r.act == p.act"</span>,
         );
 
         <span class="kw">let </span>a = MemoryAdapter::default();
@@ -3093,7 +3127,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m, a).<span class="kw">await</span>.unwrap();
 
         e.add_policy(
-            <span class="macro">vec!</span>[<span class="string">r#&quot;&quot;admin&quot;&quot;#</span>, <span class="string">&quot;post&quot;</span>, <span class="string">&quot;write&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">r#""admin""#</span>, <span class="string">"post"</span>, <span class="string">"write"</span>]
                 .into_iter()
                 .map(|x| x.to_string())
                 .collect(),
@@ -3102,7 +3136,7 @@
         </span>.unwrap();
 
         e.add_policy(
-            <span class="macro">vec!</span>[<span class="string">&quot;r.sub == r.obj.author&quot;</span>, <span class="string">&quot;post&quot;</span>, <span class="string">&quot;write&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"r.sub == r.obj.author"</span>, <span class="string">"post"</span>, <span class="string">"write"</span>]
                 .into_iter()
                 .map(|x| x.to_string())
                 .collect(),
@@ -3111,7 +3145,7 @@
         </span>.unwrap();
 
         e.add_grouping_policy(
-            <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">r#&quot;&quot;admin&quot;&quot;#</span>]
+            <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">r#""admin""#</span>]
                 .into_iter()
                 .map(|x| x.to_string())
                 .collect(),
@@ -3120,18 +3154,18 @@
         </span>.unwrap();
 
         <span class="attr">#[derive(Serialize, Hash)]
-        </span><span class="kw">pub struct </span>Post&lt;<span class="lifetime">&#39;a</span>&gt; {
-            author: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+        </span><span class="kw">pub struct </span>Post&lt;<span class="lifetime">'a</span>&gt; {
+            author: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
         }
 
         <span class="macro">assert_eq!</span>(
-            e.enforce((<span class="string">&quot;alice&quot;</span>, Post { author: <span class="string">&quot;bob&quot; </span>}, <span class="string">&quot;write&quot;</span>))
+            e.enforce((<span class="string">"alice"</span>, Post { author: <span class="string">"bob" </span>}, <span class="string">"write"</span>))
                 .unwrap(),
             <span class="bool-val">true
         </span>);
 
         <span class="macro">assert_eq!</span>(
-            e.enforce((<span class="string">&quot;bob&quot;</span>, Post { author: <span class="string">&quot;bob&quot; </span>}, <span class="string">&quot;write&quot;</span>)).unwrap(),
+            e.enforce((<span class="string">"bob"</span>, Post { author: <span class="string">"bob" </span>}, <span class="string">"write"</span>)).unwrap(),
             <span class="bool-val">true
         </span>);
     }

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/rbac_api.rs`."><title>rbac_api.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="casbin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/rbac_api.rs`."><title>rbac_api.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="casbin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.1 (3f5fd8dd4 2024-08-06)" data-channel="1.80.1" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1480,7 +1480,7 @@
         <span class="self">self</span>.remove_filtered_grouping_policy(
             <span class="number">0</span>,
             <span class="kw">if let </span><span class="prelude-val">Some</span>(domain) = domain {
-                [user, <span class="string">&quot;&quot;</span>, domain]
+                [user, <span class="string">""</span>, domain]
                     .iter()
                     .map(|s| (<span class="kw-2">*</span>s).to_string())
                     .collect()
@@ -1497,8 +1497,8 @@
         domain: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
     ) -&gt; Vec&lt;String&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>roles = <span class="macro">vec!</span>[];
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(t1) = <span class="self">self</span>.get_mut_model().get_mut_model().get_mut(<span class="string">&quot;g&quot;</span>) {
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(t2) = t1.get_mut(<span class="string">&quot;g&quot;</span>) {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(t1) = <span class="self">self</span>.get_mut_model().get_mut_model().get_mut(<span class="string">"g"</span>) {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(t2) = t1.get_mut(<span class="string">"g"</span>) {
                 roles = t2.rm.write().get_roles(name, domain);
             }
         }
@@ -1511,8 +1511,8 @@
         name: <span class="kw-2">&amp;</span>str,
         domain: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
     ) -&gt; Vec&lt;String&gt; {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(t1) = <span class="self">self</span>.get_model().get_model().get(<span class="string">&quot;g&quot;</span>) {
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(t2) = t1.get(<span class="string">&quot;g&quot;</span>) {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(t1) = <span class="self">self</span>.get_model().get_model().get(<span class="string">"g"</span>) {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(t2) = t1.get(<span class="string">"g"</span>) {
                 <span class="kw">return </span>t2.rm.read().get_users(name, domain);
             }
         }
@@ -1666,71 +1666,71 @@
         v
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_role_api() {
-        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">&quot;examples/rbac_model.conf&quot;</span>)
+        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">"examples/rbac_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
 
-        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">&quot;examples/rbac_policy.csv&quot;</span>);
+        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">"examples/rbac_policy.csv"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>], e.get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"data2_admin"</span>], e.get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>));
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.get_roles_for_user(<span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+            e.get_roles_for_user(<span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.get_roles_for_user(<span class="string">&quot;non_exists&quot;</span>, <span class="prelude-val">None</span>)
+            e.get_roles_for_user(<span class="string">"non_exists"</span>, <span class="prelude-val">None</span>)
         );
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.has_role_for_user(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1_admin&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.has_role_for_user(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.has_role_for_user(<span class="string">"alice"</span>, <span class="string">"data1_admin"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.has_role_for_user(<span class="string">"alice"</span>, <span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>));
 
-        e.add_role_for_user(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1_admin&quot;</span>, <span class="prelude-val">None</span>)
+        e.add_role_for_user(<span class="string">"alice"</span>, <span class="string">"data1_admin"</span>, <span class="prelude-val">None</span>)
             .<span class="kw">await
             </span>.unwrap();
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;data1_admin&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>],
-            sort_unstable(e.get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>))
+            <span class="macro">vec!</span>[<span class="string">"data1_admin"</span>, <span class="string">"data2_admin"</span>],
+            sort_unstable(e.get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>))
         );
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>));
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.get_roles_for_user(<span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+            e.get_roles_for_user(<span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
         );
 
-        e.delete_role_for_user(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1_admin&quot;</span>, <span class="prelude-val">None</span>)
+        e.delete_role_for_user(<span class="string">"alice"</span>, <span class="string">"data1_admin"</span>, <span class="prelude-val">None</span>)
             .<span class="kw">await
             </span>.unwrap();
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>], e.get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"data2_admin"</span>], e.get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>));
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.get_roles_for_user(<span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+            e.get_roles_for_user(<span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
         );
 
-        e.delete_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>).<span class="kw">await</span>.unwrap();
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>));
+        e.delete_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>).<span class="kw">await</span>.unwrap();
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>));
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.get_roles_for_user(<span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+            e.get_roles_for_user(<span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
         );
 
         e.add_roles_for_user(
-            <span class="string">&quot;bob&quot;</span>,
-            <span class="macro">vec!</span>[<span class="string">&quot;data1_admin&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>]
+            <span class="string">"bob"</span>,
+            <span class="macro">vec!</span>[<span class="string">"data1_admin"</span>, <span class="string">"data2_admin"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -1738,57 +1738,57 @@
         )
         .<span class="kw">await
         </span>.unwrap();
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>));
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;data1_admin&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>],
-            sort_unstable(e.get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>))
+            <span class="macro">vec!</span>[<span class="string">"data1_admin"</span>, <span class="string">"data2_admin"</span>],
+            sort_unstable(e.get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>))
         );
 
-        e.delete_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>).<span class="kw">await</span>.unwrap();
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>));
+        e.delete_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>).<span class="kw">await</span>.unwrap();
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>));
 
-        e.add_role_for_user(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1_admin&quot;</span>, <span class="prelude-val">None</span>)
+        e.add_role_for_user(<span class="string">"alice"</span>, <span class="string">"data1_admin"</span>, <span class="prelude-val">None</span>)
             .<span class="kw">await
             </span>.unwrap();
-        e.delete_user(<span class="string">&quot;alice&quot;</span>).<span class="kw">await</span>.unwrap();
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>));
+        e.delete_user(<span class="string">"alice"</span>).<span class="kw">await</span>.unwrap();
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>));
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.get_roles_for_user(<span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+            e.get_roles_for_user(<span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
         );
 
-        e.add_role_for_user(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+        e.add_role_for_user(<span class="string">"alice"</span>, <span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
             .<span class="kw">await
             </span>.unwrap();
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
 
-        e.delete_role(<span class="string">&quot;data2_admin&quot;</span>).<span class="kw">await</span>.unwrap();
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        e.delete_role(<span class="string">"data2_admin"</span>).<span class="kw">await</span>.unwrap();
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_role_api_threads() {
@@ -1797,71 +1797,71 @@
         <span class="kw">use </span>std::sync::Arc;
         <span class="kw">use </span>std::thread;
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;runtime-async-std&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"runtime-async-std"</span>)]
         </span><span class="kw">use </span>async_std::task;
 
-        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">&quot;examples/rbac_model.conf&quot;</span>)
+        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">"examples/rbac_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
 
-        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">&quot;examples/rbac_policy.csv&quot;</span>);
+        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">"examples/rbac_policy.csv"</span>);
         <span class="kw">let </span>e = Arc::new(RwLock::new(Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap()));
         <span class="kw">let </span>ee = e.clone();
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>],
-            e.write().get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>)
+            <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>],
+            e.write().get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>)
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.write().get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>)
+            e.write().get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>)
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.write().get_roles_for_user(<span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+            e.write().get_roles_for_user(<span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.write().get_roles_for_user(<span class="string">&quot;non_exists&quot;</span>, <span class="prelude-val">None</span>)
+            e.write().get_roles_for_user(<span class="string">"non_exists"</span>, <span class="prelude-val">None</span>)
         );
 
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.write().has_role_for_user(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1_admin&quot;</span>, <span class="prelude-val">None</span>)
+            e.write().has_role_for_user(<span class="string">"alice"</span>, <span class="string">"data1_admin"</span>, <span class="prelude-val">None</span>)
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
-            e.write().has_role_for_user(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+            e.write().has_role_for_user(<span class="string">"alice"</span>, <span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
         );
 
         thread::spawn(<span class="kw">move </span>|| {
-            <span class="attr">#[cfg(feature = <span class="string">&quot;runtime-async-std&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"runtime-async-std"</span>)]
             </span>{
                 task::block_on(<span class="kw">async move </span>{
                     ee.write()
-                        .add_role_for_user(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1_admin&quot;</span>, <span class="prelude-val">None</span>)
+                        .add_role_for_user(<span class="string">"alice"</span>, <span class="string">"data1_admin"</span>, <span class="prelude-val">None</span>)
                         .<span class="kw">await
                         </span>.unwrap();
 
                     <span class="macro">assert_eq!</span>(
-                        <span class="macro">vec!</span>[<span class="string">&quot;data1_admin&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>],
+                        <span class="macro">vec!</span>[<span class="string">"data1_admin"</span>, <span class="string">"data2_admin"</span>],
                         sort_unstable(
-                            ee.write().get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>)
+                            ee.write().get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>)
                         )
                     );
                     <span class="macro">assert_eq!</span>(
                         <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-                        ee.write().get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>)
+                        ee.write().get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>)
                     );
                     <span class="macro">assert_eq!</span>(
                         <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-                        ee.write().get_roles_for_user(<span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+                        ee.write().get_roles_for_user(<span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
                     );
 
                     ee.write()
                         .add_roles_for_user(
-                            <span class="string">&quot;bob&quot;</span>,
-                            <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>]
+                            <span class="string">"bob"</span>,
+                            <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>]
                                 .iter()
                                 .map(|s| s.to_string())
                                 .collect(),
@@ -1871,23 +1871,23 @@
                         </span>.unwrap();
 
                     <span class="macro">assert_eq!</span>(
-                        <span class="macro">vec!</span>[<span class="string">&quot;data1_admin&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>],
+                        <span class="macro">vec!</span>[<span class="string">"data1_admin"</span>, <span class="string">"data2_admin"</span>],
                         sort_unstable(
-                            ee.write().get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>)
+                            ee.write().get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>)
                         )
                     );
                     <span class="macro">assert_eq!</span>(
-                        <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>],
-                        ee.write().get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>)
+                        <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>],
+                        ee.write().get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>)
                     );
                     <span class="macro">assert_eq!</span>(
                         <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-                        ee.write().get_roles_for_user(<span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+                        ee.write().get_roles_for_user(<span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
                     );
                 });
             }
 
-            <span class="attr">#[cfg(feature = <span class="string">&quot;runtime-tokio&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"runtime-tokio"</span>)]
             </span>{
                 tokio::runtime::Builder::new_multi_thread()
                     .enable_all()
@@ -1895,47 +1895,47 @@
                     .unwrap()
                     .block_on(<span class="kw">async move </span>{
                         ee.write()
-                            .add_role_for_user(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1_admin&quot;</span>, <span class="prelude-val">None</span>)
+                            .add_role_for_user(<span class="string">"alice"</span>, <span class="string">"data1_admin"</span>, <span class="prelude-val">None</span>)
                             .<span class="kw">await
                             </span>.unwrap();
 
                         <span class="macro">assert_eq!</span>(
-                            <span class="macro">vec!</span>[<span class="string">&quot;data1_admin&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>],
+                            <span class="macro">vec!</span>[<span class="string">"data1_admin"</span>, <span class="string">"data2_admin"</span>],
                             sort_unstable(
-                                ee.write().get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>)
+                                ee.write().get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>)
                             )
                         );
                         <span class="macro">assert_eq!</span>(
                             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-                            ee.write().get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>)
+                            ee.write().get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>)
                         );
                         <span class="macro">assert_eq!</span>(
                             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-                            ee.write().get_roles_for_user(<span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+                            ee.write().get_roles_for_user(<span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
                         );
 
                         ee.write()
                             .add_roles_for_user(
-                                <span class="string">&quot;bob&quot;</span>,
-                                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>.to_owned()],
+                                <span class="string">"bob"</span>,
+                                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>.to_owned()],
                                 <span class="prelude-val">None</span>,
                             )
                             .<span class="kw">await
                             </span>.unwrap();
 
                         <span class="macro">assert_eq!</span>(
-                            <span class="macro">vec!</span>[<span class="string">&quot;data1_admin&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>],
+                            <span class="macro">vec!</span>[<span class="string">"data1_admin"</span>, <span class="string">"data2_admin"</span>],
                             sort_unstable(
-                                ee.write().get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>)
+                                ee.write().get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>)
                             )
                         );
                         <span class="macro">assert_eq!</span>(
-                            <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>],
-                            ee.write().get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>)
+                            <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>],
+                            ee.write().get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>)
                         );
                         <span class="macro">assert_eq!</span>(
                             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-                            ee.write().get_roles_for_user(<span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+                            ee.write().get_roles_for_user(<span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
                         );
                     });
             }
@@ -1944,336 +1944,336 @@
         .unwrap();
 
         e.write()
-            .delete_role_for_user(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1_admin&quot;</span>, <span class="prelude-val">None</span>)
+            .delete_role_for_user(<span class="string">"alice"</span>, <span class="string">"data1_admin"</span>, <span class="prelude-val">None</span>)
             .<span class="kw">await
             </span>.unwrap();
-        e.write().delete_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>).<span class="kw">await</span>.unwrap();
+        e.write().delete_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>).<span class="kw">await</span>.unwrap();
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>],
-            e.write().get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>)
+            <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>],
+            e.write().get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>)
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.write().get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>)
+            e.write().get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>)
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.write().get_roles_for_user(<span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+            e.write().get_roles_for_user(<span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
         );
 
         e.write()
-            .delete_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>)
+            .delete_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>)
             .<span class="kw">await
             </span>.unwrap();
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.write().get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>)
+            e.write().get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>)
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.write().get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>)
+            e.write().get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>)
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.write().get_roles_for_user(<span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+            e.write().get_roles_for_user(<span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
         );
 
         e.write()
-            .add_role_for_user(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1_admin&quot;</span>, <span class="prelude-val">None</span>)
+            .add_role_for_user(<span class="string">"alice"</span>, <span class="string">"data1_admin"</span>, <span class="prelude-val">None</span>)
             .<span class="kw">await
             </span>.unwrap();
-        e.write().delete_user(<span class="string">&quot;alice&quot;</span>).<span class="kw">await</span>.unwrap();
+        e.write().delete_user(<span class="string">"alice"</span>).<span class="kw">await</span>.unwrap();
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.write().get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>)
+            e.write().get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>)
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.write().get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>)
+            e.write().get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>)
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.write().get_roles_for_user(<span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+            e.write().get_roles_for_user(<span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
         );
 
         e.write()
-            .add_role_for_user(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+            .add_role_for_user(<span class="string">"alice"</span>, <span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
             .<span class="kw">await
             </span>.unwrap();
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.write().enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap()
+            e.write().enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.write().enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap()
+            e.write().enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
-            e.write().enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap()
+            e.write().enforce((<span class="string">"alice"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
-            e.write().enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap()
+            e.write().enforce((<span class="string">"alice"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap()
         );
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.write().enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.write().enforce((<span class="string">"bob"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.write().enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap()
+            e.write().enforce((<span class="string">"bob"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap()
         );
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.write().enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.write().enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.write().enforce((<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.write().enforce((<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
 
-        e.write().delete_role(<span class="string">&quot;data2_admin&quot;</span>).<span class="kw">await</span>.unwrap();
+        e.write().delete_role(<span class="string">"data2_admin"</span>).<span class="kw">await</span>.unwrap();
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.write().enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap()
+            e.write().enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.write().enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap()
+            e.write().enforce((<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.write().enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap()
+            e.write().enforce((<span class="string">"alice"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap()
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.write().enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap()
+            e.write().enforce((<span class="string">"alice"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap()
         );
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.write().enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.write().enforce((<span class="string">"bob"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
-            e.write().enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap()
+            e.write().enforce((<span class="string">"bob"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap()
         );
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.write().enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.write().enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.write().enforce((<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.write().enforce((<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_permission_api() {
         <span class="kw">let </span>m = DefaultModel::from_file(
-            <span class="string">&quot;examples/basic_without_resources_model.conf&quot;</span>,
+            <span class="string">"examples/basic_without_resources_model.conf"</span>,
         )
         .<span class="kw">await
         </span>.unwrap();
 
         <span class="kw">let </span>adapter =
-            FileAdapter::new(<span class="string">&quot;examples/basic_without_resources_policy.csv&quot;</span>);
+            FileAdapter::new(<span class="string">"examples/basic_without_resources_policy.csv"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"write"</span>)).unwrap());
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;read&quot;</span>]],
-            e.get_permissions_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>)
+            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"read"</span>]],
+            e.get_permissions_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>)
         );
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;write&quot;</span>]],
-            e.get_permissions_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>)
+            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"write"</span>]],
+            e.get_permissions_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>)
         );
 
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
             e.has_permission_for_user(
-                <span class="string">&quot;alice&quot;</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;read&quot;</span>].iter().map(|s| s.to_string()).collect()
+                <span class="string">"alice"</span>,
+                <span class="macro">vec!</span>[<span class="string">"read"</span>].iter().map(|s| s.to_string()).collect()
             )
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
             e.has_permission_for_user(
-                <span class="string">&quot;alice&quot;</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;write&quot;</span>].iter().map(|s| s.to_string()).collect()
+                <span class="string">"alice"</span>,
+                <span class="macro">vec!</span>[<span class="string">"write"</span>].iter().map(|s| s.to_string()).collect()
             )
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
             e.has_permission_for_user(
-                <span class="string">&quot;bob&quot;</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;read&quot;</span>].iter().map(|s| s.to_string()).collect()
+                <span class="string">"bob"</span>,
+                <span class="macro">vec!</span>[<span class="string">"read"</span>].iter().map(|s| s.to_string()).collect()
             )
         );
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
             e.has_permission_for_user(
-                <span class="string">&quot;bob&quot;</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;write&quot;</span>].iter().map(|s| s.to_string()).collect()
+                <span class="string">"bob"</span>,
+                <span class="macro">vec!</span>[<span class="string">"write"</span>].iter().map(|s| s.to_string()).collect()
             )
         );
 
         e.delete_permission(
-            <span class="macro">vec!</span>[<span class="string">&quot;read&quot;</span>].iter().map(|s| s.to_string()).collect(),
+            <span class="macro">vec!</span>[<span class="string">"read"</span>].iter().map(|s| s.to_string()).collect(),
         )
         .<span class="kw">await
         </span>.unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"write"</span>)).unwrap());
 
         e.add_permission_for_user(
-            <span class="string">&quot;bob&quot;</span>,
-            <span class="macro">vec!</span>[<span class="string">&quot;read&quot;</span>].iter().map(|s| s.to_string()).collect(),
+            <span class="string">"bob"</span>,
+            <span class="macro">vec!</span>[<span class="string">"read"</span>].iter().map(|s| s.to_string()).collect(),
         )
         .<span class="kw">await
         </span>.unwrap();
         e.add_permissions_for_user(
-            <span class="string">&quot;eve&quot;</span>,
+            <span class="string">"eve"</span>,
             <span class="macro">vec!</span>[
-                <span class="macro">vec!</span>[<span class="string">&quot;read&quot;</span>].iter().map(|s| s.to_string()).collect(),
-                <span class="macro">vec!</span>[<span class="string">&quot;write&quot;</span>].iter().map(|s| s.to_string()).collect(),
+                <span class="macro">vec!</span>[<span class="string">"read"</span>].iter().map(|s| s.to_string()).collect(),
+                <span class="macro">vec!</span>[<span class="string">"write"</span>].iter().map(|s| s.to_string()).collect(),
             ],
         )
         .<span class="kw">await
         </span>.unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"eve"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"eve"</span>, <span class="string">"write"</span>)).unwrap());
 
         e.delete_permission_for_user(
-            <span class="string">&quot;bob&quot;</span>,
-            <span class="macro">vec!</span>[<span class="string">&quot;read&quot;</span>].iter().map(|s| s.to_string()).collect(),
+            <span class="string">"bob"</span>,
+            <span class="macro">vec!</span>[<span class="string">"read"</span>].iter().map(|s| s.to_string()).collect(),
         )
         .<span class="kw">await
         </span>.unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"eve"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, e.enforce((<span class="string">"eve"</span>, <span class="string">"write"</span>)).unwrap());
 
-        e.delete_permissions_for_user(<span class="string">&quot;bob&quot;</span>).<span class="kw">await</span>.unwrap();
-        e.delete_permissions_for_user(<span class="string">&quot;eve&quot;</span>).<span class="kw">await</span>.unwrap();
+        e.delete_permissions_for_user(<span class="string">"bob"</span>).<span class="kw">await</span>.unwrap();
+        e.delete_permissions_for_user(<span class="string">"eve"</span>).<span class="kw">await</span>.unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"alice"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"bob"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"eve"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, e.enforce((<span class="string">"eve"</span>, <span class="string">"write"</span>)).unwrap());
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_implicit_role_api() {
-        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">&quot;examples/rbac_model.conf&quot;</span>)
+        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">"examples/rbac_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
 
         <span class="kw">let </span>adapter =
-            FileAdapter::new(<span class="string">&quot;examples/rbac_with_hierarchy_policy.csv&quot;</span>);
+            FileAdapter::new(<span class="string">"examples/rbac_with_hierarchy_policy.csv"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>]],
-            e.get_permissions_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>)
+            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>]],
+            e.get_permissions_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>)
         );
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>]],
-            e.get_permissions_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>)
+            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>]],
+            e.get_permissions_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>)
         );
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;admin&quot;</span>, <span class="string">&quot;data1_admin&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>],
-            sort_unstable(e.get_implicit_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>))
+            <span class="macro">vec!</span>[<span class="string">"admin"</span>, <span class="string">"data1_admin"</span>, <span class="string">"data2_admin"</span>],
+            sort_unstable(e.get_implicit_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>))
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.get_implicit_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>)
+            e.get_implicit_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>)
         );
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_implicit_permission_api() {
-        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">&quot;examples/rbac_model.conf&quot;</span>)
+        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">"examples/rbac_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
 
         <span class="kw">let </span>adapter =
-            FileAdapter::new(<span class="string">&quot;examples/rbac_with_hierarchy_policy.csv&quot;</span>);
+            FileAdapter::new(<span class="string">"examples/rbac_with_hierarchy_policy.csv"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>]],
-            e.get_permissions_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>)
+            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>]],
+            e.get_permissions_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>)
         );
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>]],
-            e.get_permissions_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>)
+            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>]],
+            e.get_permissions_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>)
         );
 
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[
-                <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data1_admin&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data1_admin&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>],
+                <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data1_admin"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data1_admin"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>],
             ],
-            sort_unstable(e.get_implicit_permissions_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>))
+            sort_unstable(e.get_implicit_permissions_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>))
         );
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>]],
-            e.get_implicit_permissions_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>)
+            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>]],
+            e.get_implicit_permissions_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>)
         );
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_implicit_user_api() {
-        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">&quot;examples/rbac_model.conf&quot;</span>)
+        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">"examples/rbac_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
 
         <span class="kw">let </span>adapter =
-            FileAdapter::new(<span class="string">&quot;examples/rbac_with_hierarchy_policy.csv&quot;</span>);
+            FileAdapter::new(<span class="string">"examples/rbac_with_hierarchy_policy.csv"</span>);
         <span class="kw">let </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>],
+            <span class="macro">vec!</span>[<span class="string">"alice"</span>],
             e.get_implicit_users_for_permission(
-                <span class="macro">vec!</span>[<span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"data1"</span>, <span class="string">"read"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -2281,9 +2281,9 @@
             .<span class="kw">await
         </span>);
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>],
+            <span class="macro">vec!</span>[<span class="string">"alice"</span>],
             e.get_implicit_users_for_permission(
-                <span class="macro">vec!</span>[<span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"data1"</span>, <span class="string">"write"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -2291,9 +2291,9 @@
             .<span class="kw">await
         </span>);
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>],
+            <span class="macro">vec!</span>[<span class="string">"alice"</span>],
             e.get_implicit_users_for_permission(
-                <span class="macro">vec!</span>[<span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"data2"</span>, <span class="string">"read"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -2301,10 +2301,10 @@
             .<span class="kw">await
         </span>);
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;bob&quot;</span>],
+            <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"bob"</span>],
             sort_unstable(
                 e.get_implicit_users_for_permission(
-                    <span class="macro">vec!</span>[<span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>]
+                    <span class="macro">vec!</span>[<span class="string">"data2"</span>, <span class="string">"write"</span>]
                         .iter()
                         .map(|s| s.to_string())
                         .collect()
@@ -2314,51 +2314,51 @@
         );
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_implicit_permission_api_with_domain() {
         <span class="kw">let </span>m =
-            DefaultModel::from_file(<span class="string">&quot;examples/rbac_with_domains_model.conf&quot;</span>)
+            DefaultModel::from_file(<span class="string">"examples/rbac_with_domains_model.conf"</span>)
                 .<span class="kw">await
                 </span>.unwrap();
 
         <span class="kw">let </span>adapter = FileAdapter::new(
-            <span class="string">&quot;examples/rbac_with_hierarchy_with_domains_policy.csv&quot;</span>,
+            <span class="string">"examples/rbac_with_hierarchy_with_domains_policy.csv"</span>,
         );
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
 
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[
-                <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;domain1&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;role:reader&quot;</span>, <span class="string">&quot;domain1&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;role:writer&quot;</span>, <span class="string">&quot;domain1&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>],
+                <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"domain1"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>],
+                <span class="macro">vec!</span>[<span class="string">"role:reader"</span>, <span class="string">"domain1"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>],
+                <span class="macro">vec!</span>[<span class="string">"role:writer"</span>, <span class="string">"domain1"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>],
             ],
             sort_unstable(
-                e.get_implicit_permissions_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>))
+                e.get_implicit_permissions_for_user(<span class="string">"alice"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>))
             )
         );
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_pattern_matching_fn() {
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(
-            <span class="string">&quot;examples/rbac_with_pattern_model.conf&quot;</span>,
-            <span class="string">&quot;examples/rbac_with_pattern_policy.csv&quot;</span>,
+            <span class="string">"examples/rbac_with_pattern_model.conf"</span>,
+            <span class="string">"examples/rbac_with_pattern_policy.csv"</span>,
         )
         .<span class="kw">await
         </span>.unwrap();
@@ -2369,41 +2369,41 @@
             .write()
             .matching_fn(<span class="prelude-val">Some</span>(key_match2), <span class="prelude-val">None</span>);
 
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/pen/1&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/pen2/1&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/book/1&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/book/2&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/pen/1&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/pen/2&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/book/1&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/book/2&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/pen/1&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/pen/2&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"alice"</span>, <span class="string">"/pen/1"</span>, <span class="string">"GET"</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"alice"</span>, <span class="string">"/pen2/1"</span>, <span class="string">"GET"</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"alice"</span>, <span class="string">"/book/1"</span>, <span class="string">"GET"</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"alice"</span>, <span class="string">"/book/2"</span>, <span class="string">"GET"</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"alice"</span>, <span class="string">"/pen/1"</span>, <span class="string">"GET"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"alice"</span>, <span class="string">"/pen/2"</span>, <span class="string">"GET"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"bob"</span>, <span class="string">"/book/1"</span>, <span class="string">"GET"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"bob"</span>, <span class="string">"/book/2"</span>, <span class="string">"GET"</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"bob"</span>, <span class="string">"/pen/1"</span>, <span class="string">"GET"</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"bob"</span>, <span class="string">"/pen/2"</span>, <span class="string">"GET"</span>)).unwrap());
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;book_group&quot;</span>],
-            sort_unstable(e.get_implicit_roles_for_user(<span class="string">&quot;/book/1&quot;</span>, <span class="prelude-val">None</span>))
+            <span class="macro">vec!</span>[<span class="string">"book_group"</span>],
+            sort_unstable(e.get_implicit_roles_for_user(<span class="string">"/book/1"</span>, <span class="prelude-val">None</span>))
         );
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;pen_group&quot;</span>],
-            sort_unstable(e.get_implicit_roles_for_user(<span class="string">&quot;/pen/1&quot;</span>, <span class="prelude-val">None</span>))
+            <span class="macro">vec!</span>[<span class="string">"pen_group"</span>],
+            sort_unstable(e.get_implicit_roles_for_user(<span class="string">"/pen/1"</span>, <span class="prelude-val">None</span>))
         );
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_pattern_matching_fn_with_domain() {
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(
-            <span class="string">&quot;examples/rbac_with_pattern_domain_model.conf&quot;</span>,
-            <span class="string">&quot;examples/rbac_with_pattern_domain_policy.csv&quot;</span>,
+            <span class="string">"examples/rbac_with_pattern_domain_model.conf"</span>,
+            <span class="string">"examples/rbac_with_pattern_domain_policy.csv"</span>,
         )
         .<span class="kw">await
         </span>.unwrap();
@@ -2414,40 +2414,40 @@
             .write()
             .matching_fn(<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(key_match));
 
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;domain1&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;domain1&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;domain2&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;domain2&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"alice"</span>, <span class="string">"domain1"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"alice"</span>, <span class="string">"domain1"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"alice"</span>, <span class="string">"domain2"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"alice"</span>, <span class="string">"domain2"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
 
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;domain1&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;domain1&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;domain2&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;domain2&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"bob"</span>, <span class="string">"domain1"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"bob"</span>, <span class="string">"domain1"</span>, <span class="string">"data1"</span>, <span class="string">"write"</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"bob"</span>, <span class="string">"domain2"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"bob"</span>, <span class="string">"domain2"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>)).unwrap());
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;admin&quot;</span>.to_owned()],
-            e.get_implicit_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain3&quot;</span>))
+            <span class="macro">vec!</span>[<span class="string">"admin"</span>.to_owned()],
+            e.get_implicit_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain3"</span>))
         );
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>.to_owned()],
-            e.get_users_for_role(<span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain3&quot;</span>))
+            <span class="macro">vec!</span>[<span class="string">"alice"</span>.to_owned()],
+            e.get_users_for_role(<span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain3"</span>))
         );
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_pattern_matching_basic_role() {
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(
-            <span class="string">&quot;examples/rbac_basic_role_model.conf&quot;</span>,
-            <span class="string">&quot;examples/rbac_basic_role_policy.csv&quot;</span>,
+            <span class="string">"examples/rbac_basic_role_model.conf"</span>,
+            <span class="string">"examples/rbac_basic_role_policy.csv"</span>,
         )
         .<span class="kw">await
         </span>.unwrap();
@@ -2458,45 +2458,45 @@
             .write()
             .matching_fn(<span class="prelude-val">Some</span>(key_match), <span class="prelude-val">None</span>);
 
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/pen/1&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/book/1&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/pen/1&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/book/1&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"alice"</span>, <span class="string">"/pen/1"</span>, <span class="string">"GET"</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"alice"</span>, <span class="string">"/book/1"</span>, <span class="string">"GET"</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"bob"</span>, <span class="string">"/pen/1"</span>, <span class="string">"GET"</span>)).unwrap());
+        <span class="macro">assert!</span>(e.enforce((<span class="string">"bob"</span>, <span class="string">"/book/1"</span>, <span class="string">"GET"</span>)).unwrap());
 
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/pen/2&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;/book/2&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/pen/2&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
-        <span class="macro">assert!</span>(!e.enforce((<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;/book/2&quot;</span>, <span class="string">&quot;GET&quot;</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"alice"</span>, <span class="string">"/pen/2"</span>, <span class="string">"GET"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"alice"</span>, <span class="string">"/book/2"</span>, <span class="string">"GET"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"bob"</span>, <span class="string">"/pen/2"</span>, <span class="string">"GET"</span>)).unwrap());
+        <span class="macro">assert!</span>(!e.enforce((<span class="string">"bob"</span>, <span class="string">"/book/2"</span>, <span class="string">"GET"</span>)).unwrap());
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;book_admin&quot;</span>, <span class="string">&quot;pen_admin&quot;</span>],
-            sort_unstable(e.get_implicit_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>))
+            <span class="macro">vec!</span>[<span class="string">"book_admin"</span>, <span class="string">"pen_admin"</span>],
+            sort_unstable(e.get_implicit_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>))
         );
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;book_admin&quot;</span>, <span class="string">&quot;pen_admin&quot;</span>],
-            sort_unstable(e.get_implicit_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>))
+            <span class="macro">vec!</span>[<span class="string">"book_admin"</span>, <span class="string">"pen_admin"</span>],
+            sort_unstable(e.get_implicit_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>))
         );
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_implicit_users_for_permission() {
         <span class="kw">let </span><span class="kw-2">mut </span>m = DefaultModel::default();
-        m.add_def(<span class="string">&quot;r&quot;</span>, <span class="string">&quot;r&quot;</span>, <span class="string">&quot;sub, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;p&quot;</span>, <span class="string">&quot;p&quot;</span>, <span class="string">&quot;sub, obj, act&quot;</span>);
-        m.add_def(<span class="string">&quot;g&quot;</span>, <span class="string">&quot;g&quot;</span>, <span class="string">&quot;_, _&quot;</span>);
-        m.add_def(<span class="string">&quot;e&quot;</span>, <span class="string">&quot;e&quot;</span>, <span class="string">&quot;some(where (p.eft == allow))&quot;</span>);
+        m.add_def(<span class="string">"r"</span>, <span class="string">"r"</span>, <span class="string">"sub, obj, act"</span>);
+        m.add_def(<span class="string">"p"</span>, <span class="string">"p"</span>, <span class="string">"sub, obj, act"</span>);
+        m.add_def(<span class="string">"g"</span>, <span class="string">"g"</span>, <span class="string">"_, _"</span>);
+        m.add_def(<span class="string">"e"</span>, <span class="string">"e"</span>, <span class="string">"some(where (p.eft == allow))"</span>);
         m.add_def(
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;m&quot;</span>,
-            <span class="string">&quot;g(r.sub, p.sub) &amp;&amp; r.obj == p.obj &amp;&amp; regexMatch(r.act, p.act)&quot;</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"m"</span>,
+            <span class="string">"g(r.sub, p.sub) &amp;&amp; r.obj == p.obj &amp;&amp; regexMatch(r.act, p.act)"</span>,
         );
 
         <span class="kw">let </span>a = MemoryAdapter::default();
@@ -2505,53 +2505,53 @@
 
         <span class="macro">assert!</span>(e
             .add_policy(<span class="macro">vec!</span>[
-                <span class="string">&quot;role::r1&quot;</span>.to_owned(),
-                <span class="string">&quot;data1&quot;</span>.to_owned(),
-                <span class="string">&quot;(read)|(writer)&quot;</span>.to_owned()
+                <span class="string">"role::r1"</span>.to_owned(),
+                <span class="string">"data1"</span>.to_owned(),
+                <span class="string">"(read)|(writer)"</span>.to_owned()
             ])
             .<span class="kw">await
             </span>.unwrap());
 
         <span class="macro">assert!</span>(e
             .add_policy(<span class="macro">vec!</span>[
-                <span class="string">&quot;role::r2&quot;</span>.to_owned(),
-                <span class="string">&quot;data2&quot;</span>.to_owned(),
-                <span class="string">&quot;writer&quot;</span>.to_owned()
+                <span class="string">"role::r2"</span>.to_owned(),
+                <span class="string">"data2"</span>.to_owned(),
+                <span class="string">"writer"</span>.to_owned()
             ])
             .<span class="kw">await
             </span>.unwrap());
 
         <span class="macro">assert!</span>(e
             .add_policy(<span class="macro">vec!</span>[
-                <span class="string">&quot;user1&quot;</span>.to_owned(),
-                <span class="string">&quot;data2&quot;</span>.to_owned(),
-                <span class="string">&quot;writer&quot;</span>.to_owned()
+                <span class="string">"user1"</span>.to_owned(),
+                <span class="string">"data2"</span>.to_owned(),
+                <span class="string">"writer"</span>.to_owned()
             ])
             .<span class="kw">await
             </span>.unwrap());
 
         <span class="macro">assert!</span>(e
             .add_grouping_policy(<span class="macro">vec!</span>[
-                <span class="string">&quot;user2&quot;</span>.to_owned(),
-                <span class="string">&quot;role::r2&quot;</span>.to_owned(),
+                <span class="string">"user2"</span>.to_owned(),
+                <span class="string">"role::r2"</span>.to_owned(),
             ])
             .<span class="kw">await
             </span>.unwrap());
 
         <span class="macro">assert!</span>(e
             .add_grouping_policy(<span class="macro">vec!</span>[
-                <span class="string">&quot;user3&quot;</span>.to_owned(),
-                <span class="string">&quot;role::r2&quot;</span>.to_owned(),
+                <span class="string">"user3"</span>.to_owned(),
+                <span class="string">"role::r2"</span>.to_owned(),
             ])
             .<span class="kw">await
             </span>.unwrap());
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;user1&quot;</span>.to_owned(), <span class="string">&quot;user2&quot;</span>.to_owned(), <span class="string">&quot;user3&quot;</span>.to_owned()],
+            <span class="macro">vec!</span>[<span class="string">"user1"</span>.to_owned(), <span class="string">"user2"</span>.to_owned(), <span class="string">"user3"</span>.to_owned()],
             sort_unstable(
                 e.get_implicit_users_for_permission(<span class="macro">vec!</span>[
-                    <span class="string">&quot;data2&quot;</span>.to_owned(),
-                    <span class="string">&quot;writer&quot;</span>.to_owned()
+                    <span class="string">"data2"</span>.to_owned(),
+                    <span class="string">"writer"</span>.to_owned()
                 ])
                 .<span class="kw">await
             </span>)

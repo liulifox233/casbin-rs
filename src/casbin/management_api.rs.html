@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/management_api.rs`."><title>management_api.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="casbin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/management_api.rs`."><title>management_api.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="casbin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.1 (3f5fd8dd4 2024-08-06)" data-channel="1.80.1" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1191,25 +1191,25 @@
 <span class="attr">#[async_trait]
 </span><span class="kw">pub trait </span>MgmtApi: InternalApi {
     <span class="kw">async fn </span>add_policy(<span class="kw-2">&amp;mut </span><span class="self">self</span>, params: Vec&lt;String&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
-        <span class="self">self</span>.add_named_policy(<span class="string">&quot;p&quot;</span>, params).<span class="kw">await
+        <span class="self">self</span>.add_named_policy(<span class="string">"p"</span>, params).<span class="kw">await
     </span>}
 
     <span class="kw">async fn </span>add_policies(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         paramss: Vec&lt;Vec&lt;String&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
-        <span class="self">self</span>.add_named_policies(<span class="string">&quot;p&quot;</span>, paramss).<span class="kw">await
+        <span class="self">self</span>.add_named_policies(<span class="string">"p"</span>, paramss).<span class="kw">await
     </span>}
 
     <span class="kw">async fn </span>remove_policy(<span class="kw-2">&amp;mut </span><span class="self">self</span>, params: Vec&lt;String&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
-        <span class="self">self</span>.remove_named_policy(<span class="string">&quot;p&quot;</span>, params).<span class="kw">await
+        <span class="self">self</span>.remove_named_policy(<span class="string">"p"</span>, params).<span class="kw">await
     </span>}
 
     <span class="kw">async fn </span>remove_policies(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         paramss: Vec&lt;Vec&lt;String&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
-        <span class="self">self</span>.remove_named_policies(<span class="string">&quot;p&quot;</span>, paramss).<span class="kw">await
+        <span class="self">self</span>.remove_named_policies(<span class="string">"p"</span>, paramss).<span class="kw">await
     </span>}
 
     <span class="kw">async fn </span>add_named_policy(
@@ -1237,28 +1237,28 @@
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         params: Vec&lt;String&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
-        <span class="self">self</span>.add_named_grouping_policy(<span class="string">&quot;g&quot;</span>, params).<span class="kw">await
+        <span class="self">self</span>.add_named_grouping_policy(<span class="string">"g"</span>, params).<span class="kw">await
     </span>}
 
     <span class="kw">async fn </span>add_grouping_policies(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         paramss: Vec&lt;Vec&lt;String&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
-        <span class="self">self</span>.add_named_grouping_policies(<span class="string">&quot;g&quot;</span>, paramss).<span class="kw">await
+        <span class="self">self</span>.add_named_grouping_policies(<span class="string">"g"</span>, paramss).<span class="kw">await
     </span>}
 
     <span class="kw">async fn </span>remove_grouping_policy(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         params: Vec&lt;String&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
-        <span class="self">self</span>.remove_named_grouping_policy(<span class="string">&quot;g&quot;</span>, params).<span class="kw">await
+        <span class="self">self</span>.remove_named_grouping_policy(<span class="string">"g"</span>, params).<span class="kw">await
     </span>}
 
     <span class="kw">async fn </span>remove_grouping_policies(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         paramss: Vec&lt;Vec&lt;String&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
-        <span class="self">self</span>.remove_named_grouping_policies(<span class="string">&quot;g&quot;</span>, paramss).<span class="kw">await
+        <span class="self">self</span>.remove_named_grouping_policies(<span class="string">"g"</span>, paramss).<span class="kw">await
     </span>}
 
     <span class="kw">async fn </span>add_named_grouping_policy(
@@ -1287,7 +1287,7 @@
         field_index: usize,
         field_values: Vec&lt;String&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
-        <span class="self">self</span>.remove_filtered_named_policy(<span class="string">&quot;p&quot;</span>, field_index, field_values)
+        <span class="self">self</span>.remove_filtered_named_policy(<span class="string">"p"</span>, field_index, field_values)
             .<span class="kw">await
     </span>}
 
@@ -1297,7 +1297,7 @@
         field_values: Vec&lt;String&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
         <span class="self">self</span>.remove_filtered_named_grouping_policy(
-            <span class="string">&quot;g&quot;</span>,
+            <span class="string">"g"</span>,
             field_index,
             field_values,
         )
@@ -1318,7 +1318,7 @@
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt;;
 
     <span class="kw">fn </span>get_policy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;Vec&lt;String&gt;&gt; {
-        <span class="self">self</span>.get_named_policy(<span class="string">&quot;p&quot;</span>)
+        <span class="self">self</span>.get_named_policy(<span class="string">"p"</span>)
     }
 
     <span class="kw">fn </span>get_all_policy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;Vec&lt;String&gt;&gt;;
@@ -1329,7 +1329,7 @@
         field_index: usize,
         field_values: Vec&lt;String&gt;,
     ) -&gt; Vec&lt;Vec&lt;String&gt;&gt; {
-        <span class="self">self</span>.get_filtered_named_policy(<span class="string">&quot;p&quot;</span>, field_index, field_values)
+        <span class="self">self</span>.get_filtered_named_policy(<span class="string">"p"</span>, field_index, field_values)
     }
 
     <span class="kw">fn </span>get_filtered_named_policy(
@@ -1340,13 +1340,13 @@
     ) -&gt; Vec&lt;Vec&lt;String&gt;&gt;;
 
     <span class="kw">fn </span>has_policy(<span class="kw-2">&amp;</span><span class="self">self</span>, params: Vec&lt;String&gt;) -&gt; bool {
-        <span class="self">self</span>.has_named_policy(<span class="string">&quot;p&quot;</span>, params)
+        <span class="self">self</span>.has_named_policy(<span class="string">"p"</span>, params)
     }
 
     <span class="kw">fn </span>has_named_policy(<span class="kw-2">&amp;</span><span class="self">self</span>, ptype: <span class="kw-2">&amp;</span>str, params: Vec&lt;String&gt;) -&gt; bool;
 
     <span class="kw">fn </span>get_grouping_policy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;Vec&lt;String&gt;&gt; {
-        <span class="self">self</span>.get_named_grouping_policy(<span class="string">&quot;g&quot;</span>)
+        <span class="self">self</span>.get_named_grouping_policy(<span class="string">"g"</span>)
     }
 
     <span class="kw">fn </span>get_all_grouping_policy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;Vec&lt;String&gt;&gt;;
@@ -1357,7 +1357,7 @@
         field_index: usize,
         field_values: Vec&lt;String&gt;,
     ) -&gt; Vec&lt;Vec&lt;String&gt;&gt; {
-        <span class="self">self</span>.get_filtered_named_grouping_policy(<span class="string">&quot;g&quot;</span>, field_index, field_values)
+        <span class="self">self</span>.get_filtered_named_grouping_policy(<span class="string">"g"</span>, field_index, field_values)
     }
 
     <span class="kw">fn </span>get_filtered_named_grouping_policy(
@@ -1367,7 +1367,7 @@
         field_values: Vec&lt;String&gt;,
     ) -&gt; Vec&lt;Vec&lt;String&gt;&gt;;
     <span class="kw">fn </span>has_grouping_policy(<span class="kw-2">&amp;</span><span class="self">self</span>, params: Vec&lt;String&gt;) -&gt; bool {
-        <span class="self">self</span>.has_grouping_named_policy(<span class="string">&quot;g&quot;</span>, params)
+        <span class="self">self</span>.has_grouping_named_policy(<span class="string">"g"</span>, params)
     }
     <span class="kw">fn </span>has_grouping_named_policy(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -1376,23 +1376,23 @@
     ) -&gt; bool;
 
     <span class="kw">fn </span>get_all_subjects(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;String&gt; {
-        <span class="self">self</span>.get_all_named_subjects(<span class="string">&quot;p&quot;</span>)
+        <span class="self">self</span>.get_all_named_subjects(<span class="string">"p"</span>)
     }
 
     <span class="kw">fn </span>get_all_named_subjects(<span class="kw-2">&amp;</span><span class="self">self</span>, ptype: <span class="kw-2">&amp;</span>str) -&gt; Vec&lt;String&gt;;
 
     <span class="kw">fn </span>get_all_objects(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;String&gt; {
-        <span class="self">self</span>.get_all_named_objects(<span class="string">&quot;p&quot;</span>)
+        <span class="self">self</span>.get_all_named_objects(<span class="string">"p"</span>)
     }
 
     <span class="kw">fn </span>get_all_named_objects(<span class="kw-2">&amp;</span><span class="self">self</span>, ptype: <span class="kw-2">&amp;</span>str) -&gt; Vec&lt;String&gt;;
 
     <span class="kw">fn </span>get_all_actions(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;String&gt; {
-        <span class="self">self</span>.get_all_named_actions(<span class="string">&quot;p&quot;</span>)
+        <span class="self">self</span>.get_all_named_actions(<span class="string">"p"</span>)
     }
 
     <span class="kw">fn </span>get_all_roles(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;String&gt; {
-        <span class="self">self</span>.get_all_named_roles(<span class="string">&quot;g&quot;</span>)
+        <span class="self">self</span>.get_all_named_roles(<span class="string">"g"</span>)
     }
 
     <span class="kw">fn </span>get_all_named_actions(<span class="kw-2">&amp;</span><span class="self">self</span>, ptype: <span class="kw-2">&amp;</span>str) -&gt; Vec&lt;String&gt;;
@@ -1410,7 +1410,7 @@
         ptype: <span class="kw-2">&amp;</span>str,
         params: Vec&lt;String&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
-        <span class="self">self</span>.add_policy_internal(<span class="string">&quot;p&quot;</span>, ptype, params).<span class="kw">await
+        <span class="self">self</span>.add_policy_internal(<span class="string">"p"</span>, ptype, params).<span class="kw">await
     </span>}
 
     <span class="kw">async fn </span>add_named_policies(
@@ -1418,7 +1418,7 @@
         ptype: <span class="kw-2">&amp;</span>str,
         paramss: Vec&lt;Vec&lt;String&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
-        <span class="self">self</span>.add_policies_internal(<span class="string">&quot;p&quot;</span>, ptype, paramss).<span class="kw">await
+        <span class="self">self</span>.add_policies_internal(<span class="string">"p"</span>, ptype, paramss).<span class="kw">await
     </span>}
 
     <span class="kw">async fn </span>remove_named_policy(
@@ -1426,7 +1426,7 @@
         ptype: <span class="kw-2">&amp;</span>str,
         params: Vec&lt;String&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
-        <span class="self">self</span>.remove_policy_internal(<span class="string">&quot;p&quot;</span>, ptype, params).<span class="kw">await
+        <span class="self">self</span>.remove_policy_internal(<span class="string">"p"</span>, ptype, params).<span class="kw">await
     </span>}
 
     <span class="kw">async fn </span>remove_named_policies(
@@ -1434,7 +1434,7 @@
         ptype: <span class="kw-2">&amp;</span>str,
         paramss: Vec&lt;Vec&lt;String&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
-        <span class="self">self</span>.remove_policies_internal(<span class="string">&quot;p&quot;</span>, ptype, paramss).<span class="kw">await
+        <span class="self">self</span>.remove_policies_internal(<span class="string">"p"</span>, ptype, paramss).<span class="kw">await
     </span>}
 
     <span class="kw">async fn </span>add_named_grouping_policy(
@@ -1442,7 +1442,7 @@
         ptype: <span class="kw-2">&amp;</span>str,
         params: Vec&lt;String&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
-        <span class="kw">let </span>rule_added = <span class="self">self</span>.add_policy_internal(<span class="string">&quot;g&quot;</span>, ptype, params).<span class="kw">await</span><span class="question-mark">?</span>;
+        <span class="kw">let </span>rule_added = <span class="self">self</span>.add_policy_internal(<span class="string">"g"</span>, ptype, params).<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(rule_added)
     }
 
@@ -1451,7 +1451,7 @@
         ptype: <span class="kw-2">&amp;</span>str,
         paramss: Vec&lt;Vec&lt;String&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
-        <span class="kw">let </span>all_added = <span class="self">self</span>.add_policies_internal(<span class="string">&quot;g&quot;</span>, ptype, paramss).<span class="kw">await</span><span class="question-mark">?</span>;
+        <span class="kw">let </span>all_added = <span class="self">self</span>.add_policies_internal(<span class="string">"g"</span>, ptype, paramss).<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(all_added)
     }
 
@@ -1461,7 +1461,7 @@
         params: Vec&lt;String&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
         <span class="kw">let </span>rule_removed =
-            <span class="self">self</span>.remove_policy_internal(<span class="string">&quot;g&quot;</span>, ptype, params).<span class="kw">await</span><span class="question-mark">?</span>;
+            <span class="self">self</span>.remove_policy_internal(<span class="string">"g"</span>, ptype, params).<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(rule_removed)
     }
 
@@ -1471,7 +1471,7 @@
         paramss: Vec&lt;Vec&lt;String&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
         <span class="kw">let </span>all_removed =
-            <span class="self">self</span>.remove_policies_internal(<span class="string">&quot;g&quot;</span>, ptype, paramss).<span class="kw">await</span><span class="question-mark">?</span>;
+            <span class="self">self</span>.remove_policies_internal(<span class="string">"g"</span>, ptype, paramss).<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(all_removed)
     }
 
@@ -1484,7 +1484,7 @@
         <span class="attr">#[allow(unused_variables)]
         </span><span class="kw">let </span>(rule_removed, rules) = <span class="self">self
             </span>.remove_filtered_policy_internal(
-                <span class="string">&quot;g&quot;</span>,
+                <span class="string">"g"</span>,
                 ptype,
                 field_index,
                 field_values,
@@ -1501,7 +1501,7 @@
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
         <span class="prelude-val">Ok</span>(<span class="self">self
             </span>.remove_filtered_policy_internal(
-                <span class="string">&quot;p&quot;</span>,
+                <span class="string">"p"</span>,
                 ptype,
                 field_index,
                 field_values,
@@ -1511,12 +1511,12 @@
     }
 
     <span class="kw">fn </span>get_named_policy(<span class="kw-2">&amp;</span><span class="self">self</span>, ptype: <span class="kw-2">&amp;</span>str) -&gt; Vec&lt;Vec&lt;String&gt;&gt; {
-        <span class="self">self</span>.get_model().get_policy(<span class="string">&quot;p&quot;</span>, ptype)
+        <span class="self">self</span>.get_model().get_policy(<span class="string">"p"</span>, ptype)
     }
 
     <span class="kw">fn </span>get_all_policy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;Vec&lt;String&gt;&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>res: Vec&lt;Vec&lt;String&gt;&gt; = <span class="macro">vec!</span>[];
-        <span class="kw">let </span>sec = <span class="string">&quot;p&quot;</span>;
+        <span class="kw">let </span>sec = <span class="string">"p"</span>;
         <span class="kw">if let </span><span class="prelude-val">Some</span>(ast_map) = <span class="self">self</span>.get_model().get_model().get(sec) {
             <span class="kw">for </span>(ptype, ast) <span class="kw">in </span>ast_map {
                 res.extend(ast.get_policy().clone().into_iter().map(|<span class="kw-2">mut </span>x| {
@@ -1537,7 +1537,7 @@
         field_values: Vec&lt;String&gt;,
     ) -&gt; Vec&lt;Vec&lt;String&gt;&gt; {
         <span class="self">self</span>.get_model().get_filtered_policy(
-            <span class="string">&quot;p&quot;</span>,
+            <span class="string">"p"</span>,
             ptype,
             field_index,
             field_values,
@@ -1545,16 +1545,16 @@
     }
 
     <span class="kw">fn </span>has_named_policy(<span class="kw-2">&amp;</span><span class="self">self</span>, ptype: <span class="kw-2">&amp;</span>str, params: Vec&lt;String&gt;) -&gt; bool {
-        <span class="self">self</span>.get_model().has_policy(<span class="string">&quot;p&quot;</span>, ptype, params)
+        <span class="self">self</span>.get_model().has_policy(<span class="string">"p"</span>, ptype, params)
     }
 
     <span class="kw">fn </span>get_named_grouping_policy(<span class="kw-2">&amp;</span><span class="self">self</span>, ptype: <span class="kw-2">&amp;</span>str) -&gt; Vec&lt;Vec&lt;String&gt;&gt; {
-        <span class="self">self</span>.get_model().get_policy(<span class="string">&quot;g&quot;</span>, ptype)
+        <span class="self">self</span>.get_model().get_policy(<span class="string">"g"</span>, ptype)
     }
 
     <span class="kw">fn </span>get_all_grouping_policy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;Vec&lt;String&gt;&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>res: Vec&lt;Vec&lt;String&gt;&gt; = <span class="macro">vec!</span>[];
-        <span class="kw">let </span>sec = <span class="string">&quot;g&quot;</span>;
+        <span class="kw">let </span>sec = <span class="string">"g"</span>;
         <span class="kw">if let </span><span class="prelude-val">Some</span>(ast_map) = <span class="self">self</span>.get_model().get_model().get(sec) {
             <span class="kw">for </span>(ptype, ast) <span class="kw">in </span>ast_map {
                 res.extend(ast.get_policy().clone().into_iter().map(|<span class="kw-2">mut </span>x| {
@@ -1575,7 +1575,7 @@
         field_values: Vec&lt;String&gt;,
     ) -&gt; Vec&lt;Vec&lt;String&gt;&gt; {
         <span class="self">self</span>.get_model().get_filtered_policy(
-            <span class="string">&quot;g&quot;</span>,
+            <span class="string">"g"</span>,
             ptype,
             field_index,
             field_values,
@@ -1587,27 +1587,27 @@
         ptype: <span class="kw-2">&amp;</span>str,
         params: Vec&lt;String&gt;,
     ) -&gt; bool {
-        <span class="self">self</span>.get_model().has_policy(<span class="string">&quot;g&quot;</span>, ptype, params)
+        <span class="self">self</span>.get_model().has_policy(<span class="string">"g"</span>, ptype, params)
     }
 
     <span class="kw">fn </span>get_all_named_subjects(<span class="kw-2">&amp;</span><span class="self">self</span>, ptype: <span class="kw-2">&amp;</span>str) -&gt; Vec&lt;String&gt; {
         <span class="self">self</span>.get_model()
-            .get_values_for_field_in_policy(<span class="string">&quot;p&quot;</span>, ptype, <span class="number">0</span>)
+            .get_values_for_field_in_policy(<span class="string">"p"</span>, ptype, <span class="number">0</span>)
     }
 
     <span class="kw">fn </span>get_all_named_objects(<span class="kw-2">&amp;</span><span class="self">self</span>, ptype: <span class="kw-2">&amp;</span>str) -&gt; Vec&lt;String&gt; {
         <span class="self">self</span>.get_model()
-            .get_values_for_field_in_policy(<span class="string">&quot;p&quot;</span>, ptype, <span class="number">1</span>)
+            .get_values_for_field_in_policy(<span class="string">"p"</span>, ptype, <span class="number">1</span>)
     }
 
     <span class="kw">fn </span>get_all_named_actions(<span class="kw-2">&amp;</span><span class="self">self</span>, ptype: <span class="kw-2">&amp;</span>str) -&gt; Vec&lt;String&gt; {
         <span class="self">self</span>.get_model()
-            .get_values_for_field_in_policy(<span class="string">&quot;p&quot;</span>, ptype, <span class="number">2</span>)
+            .get_values_for_field_in_policy(<span class="string">"p"</span>, ptype, <span class="number">2</span>)
     }
 
     <span class="kw">fn </span>get_all_named_roles(<span class="kw-2">&amp;</span><span class="self">self</span>, ptype: <span class="kw-2">&amp;</span>str) -&gt; Vec&lt;String&gt; {
         <span class="self">self</span>.get_model()
-            .get_values_for_field_in_policy(<span class="string">&quot;g&quot;</span>, ptype, <span class="number">1</span>)
+            .get_values_for_field_in_policy(<span class="string">"g"</span>, ptype, <span class="number">1</span>)
     }
 }
 
@@ -1620,33 +1620,33 @@
         v
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_modify_grouping_policy_api() {
-        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">&quot;examples/rbac_model.conf&quot;</span>)
+        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">"examples/rbac_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
 
-        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">&quot;examples/rbac_policy.csv&quot;</span>);
+        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">"examples/rbac_policy.csv"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>], e.get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;eve&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"data2_admin"</span>], e.get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"eve"</span>, <span class="prelude-val">None</span>));
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.get_roles_for_user(<span class="string">&quot;non_exist&quot;</span>, <span class="prelude-val">None</span>)
+            e.get_roles_for_user(<span class="string">"non_exist"</span>, <span class="prelude-val">None</span>)
         );
 
         e.remove_grouping_policy(
-            <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data2_admin"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -1654,7 +1654,7 @@
         .<span class="kw">await
         </span>.unwrap();
         e.add_grouping_policy(
-            <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1_admin&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data1_admin"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -1662,7 +1662,7 @@
         .<span class="kw">await
         </span>.unwrap();
         e.add_grouping_policy(
-            <span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;data3_admin&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"eve"</span>, <span class="string">"data3_admin"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -1671,18 +1671,18 @@
         </span>.unwrap();
 
         <span class="kw">let </span>named_grouping_policy =
-            <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>.to_string(), <span class="string">&quot;data2_admin&quot;</span>.to_string()];
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>));
-        e.add_named_grouping_policy(<span class="string">&quot;g&quot;</span>, named_grouping_policy.clone())
+            <span class="macro">vec!</span>[<span class="string">"alice"</span>.to_string(), <span class="string">"data2_admin"</span>.to_string()];
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>));
+        e.add_named_grouping_policy(<span class="string">"g"</span>, named_grouping_policy.clone())
             .<span class="kw">await
             </span>.unwrap();
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>], e.get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>));
-        e.remove_named_grouping_policy(<span class="string">&quot;g&quot;</span>, named_grouping_policy.clone())
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"data2_admin"</span>], e.get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>));
+        e.remove_named_grouping_policy(<span class="string">"g"</span>, named_grouping_policy.clone())
             .<span class="kw">await
             </span>.unwrap();
 
         e.remove_grouping_policy(
-            <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data2_admin"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -1690,7 +1690,7 @@
         .<span class="kw">await
         </span>.unwrap();
         e.add_grouping_policy(
-            <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1_admin&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data1_admin"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -1698,7 +1698,7 @@
         .<span class="kw">await
         </span>.unwrap();
         e.add_grouping_policy(
-            <span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;data3_admin&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"eve"</span>, <span class="string">"data3_admin"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -1706,68 +1706,68 @@
         .<span class="kw">await
         </span>.unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>], e.get_users_for_role(<span class="string">&quot;data1_admin&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"bob"</span>], e.get_users_for_role(<span class="string">"data1_admin"</span>, <span class="prelude-val">None</span>));
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.get_users_for_role(<span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+            e.get_users_for_role(<span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
         );
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>], e.get_users_for_role(<span class="string">&quot;data3_admin&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"eve"</span>], e.get_users_for_role(<span class="string">"data3_admin"</span>, <span class="prelude-val">None</span>));
 
         e.remove_filtered_grouping_policy(
             <span class="number">0</span>,
-            <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>].iter().map(|s| s.to_string()).collect(),
+            <span class="macro">vec!</span>[<span class="string">"bob"</span>].iter().map(|s| s.to_string()).collect(),
         )
         .<span class="kw">await
         </span>.unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;data3_admin&quot;</span>], e.get_roles_for_user(<span class="string">&quot;eve&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"data3_admin"</span>], e.get_roles_for_user(<span class="string">"eve"</span>, <span class="prelude-val">None</span>));
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.get_roles_for_user(<span class="string">&quot;non_exist&quot;</span>, <span class="prelude-val">None</span>)
+            e.get_roles_for_user(<span class="string">"non_exist"</span>, <span class="prelude-val">None</span>)
         );
 
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.get_users_for_role(<span class="string">&quot;data1_admin&quot;</span>, <span class="prelude-val">None</span>)
+            e.get_users_for_role(<span class="string">"data1_admin"</span>, <span class="prelude-val">None</span>)
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.get_users_for_role(<span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+            e.get_users_for_role(<span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
         );
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>], e.get_users_for_role(<span class="string">&quot;data3_admin&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"eve"</span>], e.get_users_for_role(<span class="string">"data3_admin"</span>, <span class="prelude-val">None</span>));
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_modify_policy_api() {
-        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">&quot;examples/rbac_model.conf&quot;</span>)
+        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">"examples/rbac_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
 
-        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">&quot;examples/rbac_policy.csv&quot;</span>);
+        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">"examples/rbac_policy.csv"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
 
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[
-                <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>],
+                <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>],
+                <span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>],
             ],
             sort_unstable(e.get_policy())
         );
 
         e.remove_policy(
-            <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -1775,7 +1775,7 @@
         .<span class="kw">await
         </span>.unwrap();
         e.remove_policy(
-            <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -1783,7 +1783,7 @@
         .<span class="kw">await
         </span>.unwrap();
         e.remove_policy(
-            <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -1791,7 +1791,7 @@
         .<span class="kw">await
         </span>.unwrap();
         e.add_policy(
-            <span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;data3&quot;</span>, <span class="string">&quot;read&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"eve"</span>, <span class="string">"data3"</span>, <span class="string">"read"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -1799,7 +1799,7 @@
         .<span class="kw">await
         </span>.unwrap();
         e.add_policy(
-            <span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;data3&quot;</span>, <span class="string">&quot;read&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"eve"</span>, <span class="string">"data3"</span>, <span class="string">"read"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -1808,140 +1808,140 @@
         </span>.unwrap();
 
         <span class="kw">let </span>named_policy =
-            <span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>.to_string(), <span class="string">&quot;data3&quot;</span>.to_string(), <span class="string">&quot;read&quot;</span>.to_string()];
-        e.remove_named_policy(<span class="string">&quot;p&quot;</span>, named_policy.clone())
+            <span class="macro">vec!</span>[<span class="string">"eve"</span>.to_string(), <span class="string">"data3"</span>.to_string(), <span class="string">"read"</span>.to_string()];
+        e.remove_named_policy(<span class="string">"p"</span>, named_policy.clone())
             .<span class="kw">await
             </span>.unwrap();
-        e.add_named_policy(<span class="string">&quot;p&quot;</span>, named_policy.clone()).<span class="kw">await</span>.unwrap();
+        e.add_named_policy(<span class="string">"p"</span>, named_policy.clone()).<span class="kw">await</span>.unwrap();
 
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;data3&quot;</span>, <span class="string">&quot;read&quot;</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>],
+                <span class="macro">vec!</span>[<span class="string">"eve"</span>, <span class="string">"data3"</span>, <span class="string">"read"</span>],
             ],
             sort_unstable(e.get_policy())
         );
 
         e.remove_filtered_policy(
             <span class="number">1</span>,
-            <span class="macro">vec!</span>[<span class="string">&quot;data2&quot;</span>].iter().map(|s| s.to_string()).collect(),
+            <span class="macro">vec!</span>[<span class="string">"data2"</span>].iter().map(|s| s.to_string()).collect(),
         )
         .<span class="kw">await
         </span>.unwrap();
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;data3&quot;</span>, <span class="string">&quot;read&quot;</span>],], e.get_policy());
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"eve"</span>, <span class="string">"data3"</span>, <span class="string">"read"</span>],], e.get_policy());
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_get_policy_api() {
-        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">&quot;examples/rbac_model.conf&quot;</span>)
+        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">"examples/rbac_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
 
-        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">&quot;examples/rbac_policy.csv&quot;</span>);
+        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">"examples/rbac_policy.csv"</span>);
         <span class="kw">let </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
 
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[
-                <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>],
+                <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>],
+                <span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>],
             ],
             sort_unstable(e.get_policy())
         );
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>]],
+            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>]],
             e.get_filtered_policy(
                 <span class="number">0</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>].iter().map(|s| s.to_string()).collect()
+                <span class="macro">vec!</span>[<span class="string">"alice"</span>].iter().map(|s| s.to_string()).collect()
             )
         );
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>]],
+            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>]],
             e.get_filtered_policy(
                 <span class="number">0</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>].iter().map(|s| s.to_string()).collect()
+                <span class="macro">vec!</span>[<span class="string">"bob"</span>].iter().map(|s| s.to_string()).collect()
             )
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>],
             ],
             sort_unstable(e.get_filtered_policy(
                 <span class="number">0</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>].iter().map(|s| s.to_string()).collect()
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>].iter().map(|s| s.to_string()).collect()
             ))
         );
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>],],
+            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>],],
             e.get_filtered_policy(
                 <span class="number">1</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;data1&quot;</span>].iter().map(|s| s.to_string()).collect()
+                <span class="macro">vec!</span>[<span class="string">"data1"</span>].iter().map(|s| s.to_string()).collect()
             )
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[
-                <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>],
+                <span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>],
             ],
             sort_unstable(e.get_filtered_policy(
                 <span class="number">1</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;data2&quot;</span>].iter().map(|s| s.to_string()).collect()
+                <span class="macro">vec!</span>[<span class="string">"data2"</span>].iter().map(|s| s.to_string()).collect()
             ))
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[
-                <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>],
+                <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>],
             ],
             sort_unstable(e.get_filtered_policy(
                 <span class="number">2</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;read&quot;</span>].iter().map(|s| s.to_string()).collect()
+                <span class="macro">vec!</span>[<span class="string">"read"</span>].iter().map(|s| s.to_string()).collect()
             ))
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[
-                <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>],
+                <span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>],
             ],
             sort_unstable(e.get_filtered_policy(
                 <span class="number">2</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;write&quot;</span>].iter().map(|s| s.to_string()).collect()
+                <span class="macro">vec!</span>[<span class="string">"write"</span>].iter().map(|s| s.to_string()).collect()
             ))
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>],
             ],
             sort_unstable(
                 e.get_filtered_policy(
                     <span class="number">0</span>,
-                    <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>]
+                    <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>]
                         .iter()
                         .map(|s| s.to_string())
                         .collect()
                 )
             )
         );
-        <span class="comment">// Note: &quot;&quot; (empty string) in fieldValues means matching all values.
+        <span class="comment">// Note: "" (empty string) in fieldValues means matching all values.
         </span><span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>],],
+            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>],],
             e.get_filtered_policy(
                 <span class="number">0</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;read&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">""</span>, <span class="string">"read"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -1949,13 +1949,13 @@
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[
-                <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>],
+                <span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>],
             ],
             sort_unstable(
                 e.get_filtered_policy(
                     <span class="number">1</span>,
-                    <span class="macro">vec!</span>[<span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>]
+                    <span class="macro">vec!</span>[<span class="string">"data2"</span>, <span class="string">"write"</span>]
                         .iter()
                         .map(|s| s.to_string())
                         .collect()
@@ -1966,7 +1966,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
             e.has_policy(
-                <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -1975,7 +1975,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
             e.has_policy(
-                <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -1984,7 +1984,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
             e.has_policy(
-                <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -1993,7 +1993,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
             e.has_policy(
-                <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data3&quot;</span>, <span class="string">&quot;write&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data3"</span>, <span class="string">"write"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -2001,10 +2001,10 @@
         );
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>]],
+            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data2_admin"</span>]],
             e.get_filtered_grouping_policy(
                 <span class="number">0</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>].iter().map(|s| s.to_string()).collect()
+                <span class="macro">vec!</span>[<span class="string">"alice"</span>].iter().map(|s| s.to_string()).collect()
             )
         );
         <span class="kw">let </span>empty_policy: Vec&lt;Vec&lt;String&gt;&gt; = <span class="macro">vec!</span>[];
@@ -2012,36 +2012,36 @@
             empty_policy,
             e.get_filtered_grouping_policy(
                 <span class="number">0</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>].iter().map(|s| s.to_string()).collect()
+                <span class="macro">vec!</span>[<span class="string">"bob"</span>].iter().map(|s| s.to_string()).collect()
             )
         );
         <span class="macro">assert_eq!</span>(
             empty_policy,
             e.get_filtered_grouping_policy(
                 <span class="number">1</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;data1_admin&quot;</span>].iter().map(|s| s.to_string()).collect()
+                <span class="macro">vec!</span>[<span class="string">"data1_admin"</span>].iter().map(|s| s.to_string()).collect()
             )
         );
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>],],
+            <span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data2_admin"</span>],],
             e.get_filtered_grouping_policy(
                 <span class="number">1</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>].iter().map(|s| s.to_string()).collect()
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>].iter().map(|s| s.to_string()).collect()
             )
         );
-        <span class="comment">// Note: &quot;&quot; (empty string) in fieldValues means matching all values.
+        <span class="comment">// Note: "" (empty string) in fieldValues means matching all values.
         </span><span class="macro">assert_eq!</span>(
             empty_policy,
             e.get_filtered_grouping_policy(
                 <span class="number">0</span>,
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>].iter().map(|s| s.to_string()).collect()
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>].iter().map(|s| s.to_string()).collect()
             )
         );
 
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
             e.has_grouping_policy(
-                <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data2_admin"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -2050,7 +2050,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
             e.has_grouping_policy(
-                <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data2_admin"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -2058,72 +2058,72 @@
         );
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_get_list() {
-        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">&quot;examples/rbac_model.conf&quot;</span>)
+        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">"examples/rbac_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
 
-        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">&quot;examples/rbac_policy.csv&quot;</span>);
+        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">"examples/rbac_policy.csv"</span>);
         <span class="kw">let </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>],
+            <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"bob"</span>, <span class="string">"data2_admin"</span>],
             sort_unstable(e.get_all_subjects())
         );
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;data1&quot;</span>, <span class="string">&quot;data2&quot;</span>], sort_unstable(e.get_all_objects()));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;read&quot;</span>, <span class="string">&quot;write&quot;</span>], sort_unstable(e.get_all_actions()));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>], e.get_all_roles());
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"data1"</span>, <span class="string">"data2"</span>], sort_unstable(e.get_all_objects()));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"read"</span>, <span class="string">"write"</span>], sort_unstable(e.get_all_actions()));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"data2_admin"</span>], e.get_all_roles());
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_modify_policies_api() {
-        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">&quot;examples/rbac_model.conf&quot;</span>)
+        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">"examples/rbac_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
 
-        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">&quot;examples/rbac_policy.csv&quot;</span>);
+        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">"examples/rbac_policy.csv"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
 
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[
-                <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>],
+                <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>],
+                <span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>],
             ],
             sort_unstable(e.get_policy())
         );
 
         e.remove_policies(<span class="macro">vec!</span>[
-            <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
-            <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
         ])
         .<span class="kw">await
         </span>.unwrap();
-        e.remove_policies(<span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>]
+        e.remove_policies(<span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>]
             .iter()
             .map(|s| s.to_string())
             .collect()])
@@ -2132,7 +2132,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
             e.has_policy(
-                <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -2141,7 +2141,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
             e.has_policy(
-                <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -2150,7 +2150,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
             e.has_policy(
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -2159,24 +2159,24 @@
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
             e.has_policy(
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
             )
         );
-        e.add_policies(<span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;data3&quot;</span>, <span class="string">&quot;read&quot;</span>]
+        e.add_policies(<span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"eve"</span>, <span class="string">"data3"</span>, <span class="string">"read"</span>]
             .iter()
             .map(|s| s.to_string())
             .collect()])
             .<span class="kw">await
             </span>.unwrap();
         e.add_policies(<span class="macro">vec!</span>[
-            <span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;data3&quot;</span>, <span class="string">&quot;read&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"eve"</span>, <span class="string">"data3"</span>, <span class="string">"read"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
-            <span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;data3&quot;</span>, <span class="string">&quot;read&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"eve"</span>, <span class="string">"data3"</span>, <span class="string">"read"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -2186,7 +2186,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
             e.has_policy(
-                <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data1&quot;</span>, <span class="string">&quot;read&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data1"</span>, <span class="string">"read"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -2195,7 +2195,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">false</span>,
             e.has_policy(
-                <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -2204,7 +2204,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
             e.has_policy(
-                <span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;data3&quot;</span>, <span class="string">&quot;read&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"eve"</span>, <span class="string">"data3"</span>, <span class="string">"read"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -2213,7 +2213,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
             e.has_policy(
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -2222,7 +2222,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="bool-val">true</span>,
             e.has_policy(
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>]
                     .iter()
                     .map(|s| s.to_string())
                     .collect()
@@ -2230,94 +2230,94 @@
         );
 
         <span class="kw">let </span>named_policy =
-            <span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>.to_string(), <span class="string">&quot;data3&quot;</span>.to_string(), <span class="string">&quot;read&quot;</span>.to_string()];
-        e.remove_named_policies(<span class="string">&quot;p&quot;</span>, <span class="macro">vec!</span>[named_policy.clone()])
+            <span class="macro">vec!</span>[<span class="string">"eve"</span>.to_string(), <span class="string">"data3"</span>.to_string(), <span class="string">"read"</span>.to_string()];
+        e.remove_named_policies(<span class="string">"p"</span>, <span class="macro">vec!</span>[named_policy.clone()])
             .<span class="kw">await
             </span>.unwrap();
-        e.add_named_policies(<span class="string">&quot;p&quot;</span>, <span class="macro">vec!</span>[named_policy.clone()])
+        e.add_named_policies(<span class="string">"p"</span>, <span class="macro">vec!</span>[named_policy.clone()])
             .<span class="kw">await
             </span>.unwrap();
 
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;read&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>, <span class="string">&quot;data2&quot;</span>, <span class="string">&quot;write&quot;</span>],
-                <span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;data3&quot;</span>, <span class="string">&quot;read&quot;</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"read"</span>],
+                <span class="macro">vec!</span>[<span class="string">"data2_admin"</span>, <span class="string">"data2"</span>, <span class="string">"write"</span>],
+                <span class="macro">vec!</span>[<span class="string">"eve"</span>, <span class="string">"data3"</span>, <span class="string">"read"</span>],
             ],
             sort_unstable(e.get_policy())
         );
 
         e.remove_filtered_policy(
             <span class="number">1</span>,
-            <span class="macro">vec!</span>[<span class="string">&quot;data2&quot;</span>].iter().map(|s| s.to_string()).collect(),
+            <span class="macro">vec!</span>[<span class="string">"data2"</span>].iter().map(|s| s.to_string()).collect(),
         )
         .<span class="kw">await
         </span>.unwrap();
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;data3&quot;</span>, <span class="string">&quot;read&quot;</span>],], e.get_policy());
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"eve"</span>, <span class="string">"data3"</span>, <span class="string">"read"</span>],], e.get_policy());
     }
 
-    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-async-std&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-async-std"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         async_std::test
     )]
     #[cfg_attr(
-        all(feature = <span class="string">&quot;runtime-tokio&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)),
+        all(feature = <span class="string">"runtime-tokio"</span>, not(target_arch = <span class="string">"wasm32"</span>)),
         tokio::test
     )]
     </span><span class="kw">async fn </span>test_modify_grouping_policies_api() {
-        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">&quot;examples/rbac_model.conf&quot;</span>)
+        <span class="kw">let </span>m = DefaultModel::from_file(<span class="string">"examples/rbac_model.conf"</span>)
             .<span class="kw">await
             </span>.unwrap();
 
-        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">&quot;examples/rbac_policy.csv&quot;</span>);
+        <span class="kw">let </span>adapter = FileAdapter::new(<span class="string">"examples/rbac_policy.csv"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>e = Enforcer::new(m, adapter).<span class="kw">await</span>.unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>], e.get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;eve&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"data2_admin"</span>], e.get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"eve"</span>, <span class="prelude-val">None</span>));
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.get_roles_for_user(<span class="string">&quot;non_exist&quot;</span>, <span class="prelude-val">None</span>)
+            e.get_roles_for_user(<span class="string">"non_exist"</span>, <span class="prelude-val">None</span>)
         );
 
-        e.remove_grouping_policies(<span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>]
+        e.remove_grouping_policies(<span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data2_admin"</span>]
             .iter()
             .map(|s| s.to_string())
             .collect()])
             .<span class="kw">await
             </span>.unwrap();
         e.add_grouping_policies(<span class="macro">vec!</span>[
-            <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1_admin&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data1_admin"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
-            <span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;data3_admin&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"eve"</span>, <span class="string">"data3_admin"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
         ])
         .<span class="kw">await
         </span>.unwrap();
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;data1_admin&quot;</span>], e.get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;data3_admin&quot;</span>], e.get_roles_for_user(<span class="string">&quot;eve&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"data1_admin"</span>], e.get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"data3_admin"</span>], e.get_roles_for_user(<span class="string">"eve"</span>, <span class="prelude-val">None</span>));
 
         <span class="kw">let </span>named_grouping_policy =
-            <span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>.to_string(), <span class="string">&quot;data2_admin&quot;</span>.to_string()];
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>));
-        e.add_named_grouping_policies(<span class="string">&quot;g&quot;</span>, <span class="macro">vec!</span>[named_grouping_policy.clone()])
+            <span class="macro">vec!</span>[<span class="string">"alice"</span>.to_string(), <span class="string">"data2_admin"</span>.to_string()];
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>));
+        e.add_named_grouping_policies(<span class="string">"g"</span>, <span class="macro">vec!</span>[named_grouping_policy.clone()])
             .<span class="kw">await
             </span>.unwrap();
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;data2_admin&quot;</span>], e.get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"data2_admin"</span>], e.get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>));
         e.remove_named_grouping_policies(
-            <span class="string">&quot;g&quot;</span>,
+            <span class="string">"g"</span>,
             <span class="macro">vec!</span>[named_grouping_policy.clone()],
         )
         .<span class="kw">await
         </span>.unwrap();
 
-        e.remove_grouping_policies(<span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;data2_admin&quot;</span>]
+        e.remove_grouping_policies(<span class="macro">vec!</span>[<span class="macro">vec!</span>[<span class="string">"alice"</span>, <span class="string">"data2_admin"</span>]
             .iter()
             .map(|s| s.to_string())
             .collect()])
@@ -2325,11 +2325,11 @@
             </span>.unwrap();
 
         e.add_grouping_policies(<span class="macro">vec!</span>[
-            <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;data1_admin&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"bob"</span>, <span class="string">"data1_admin"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
-            <span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;data3_admin&quot;</span>]
+            <span class="macro">vec!</span>[<span class="string">"eve"</span>, <span class="string">"data3_admin"</span>]
                 .iter()
                 .map(|s| s.to_string())
                 .collect(),
@@ -2337,37 +2337,37 @@
         .<span class="kw">await
         </span>.unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>], e.get_users_for_role(<span class="string">&quot;data1_admin&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"bob"</span>], e.get_users_for_role(<span class="string">"data1_admin"</span>, <span class="prelude-val">None</span>));
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.get_users_for_role(<span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+            e.get_users_for_role(<span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
         );
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>], e.get_users_for_role(<span class="string">&quot;data3_admin&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"eve"</span>], e.get_users_for_role(<span class="string">"data3_admin"</span>, <span class="prelude-val">None</span>));
 
         e.remove_filtered_grouping_policy(
             <span class="number">0</span>,
-            <span class="macro">vec!</span>[<span class="string">&quot;bob&quot;</span>].iter().map(|s| s.to_string()).collect(),
+            <span class="macro">vec!</span>[<span class="string">"bob"</span>].iter().map(|s| s.to_string()).collect(),
         )
         .<span class="kw">await
         </span>.unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">&quot;bob&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;data3_admin&quot;</span>], e.get_roles_for_user(<span class="string">&quot;eve&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"alice"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], e.get_roles_for_user(<span class="string">"bob"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"data3_admin"</span>], e.get_roles_for_user(<span class="string">"eve"</span>, <span class="prelude-val">None</span>));
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.get_roles_for_user(<span class="string">&quot;non_exist&quot;</span>, <span class="prelude-val">None</span>)
+            e.get_roles_for_user(<span class="string">"non_exist"</span>, <span class="prelude-val">None</span>)
         );
 
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.get_users_for_role(<span class="string">&quot;data1_admin&quot;</span>, <span class="prelude-val">None</span>)
+            e.get_users_for_role(<span class="string">"data1_admin"</span>, <span class="prelude-val">None</span>)
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">vec!</span>[String::new(); <span class="number">0</span>],
-            e.get_users_for_role(<span class="string">&quot;data2_admin&quot;</span>, <span class="prelude-val">None</span>)
+            e.get_users_for_role(<span class="string">"data2_admin"</span>, <span class="prelude-val">None</span>)
         );
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;eve&quot;</span>], e.get_users_for_role(<span class="string">&quot;data3_admin&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"eve"</span>], e.get_users_for_role(<span class="string">"data3_admin"</span>, <span class="prelude-val">None</span>));
     }
 }
 </code></pre></div></section></main></body></html>

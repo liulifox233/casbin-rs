@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/util.rs`."><title>util.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="casbin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/util.rs`."><title>util.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="casbin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.1 (3f5fd8dd4 2024-08-06)" data-channel="1.80.1" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -186,27 +186,27 @@
 
 <span class="kw">use </span>std::borrow::Cow;
 
-<span class="macro">macro_rules! </span>regex {
+<span class="macro">macro_rules!</span> regex {
     (<span class="macro-nonterminal">$re</span>:expr) =&gt; {
         ::regex::Regex::new(<span class="macro-nonterminal">$re</span>).unwrap()
     };
 }
 
-<span class="kw">static </span>ESC_A: Lazy&lt;Regex&gt; = Lazy::new(|| <span class="macro">regex!</span>(<span class="string">r&quot;\b(r\d*|p\d*)\.&quot;</span>));
+<span class="kw">static </span>ESC_A: Lazy&lt;Regex&gt; = Lazy::new(|| <span class="macro">regex!</span>(<span class="string">r"\b(r\d*|p\d*)\."</span>));
 <span class="attr">#[allow(dead_code)]
 </span><span class="kw">static </span>ESC_G: Lazy&lt;Regex&gt; = Lazy::new(|| {
-    <span class="macro">regex!</span>(<span class="string">r&quot;\b(g\d*)\(((?:\s*[r|p]\d*\.\w+\s*,\s*){1,2}\s*[r|p]\d*\.\w+\s*)\)&quot;</span>)
+    <span class="macro">regex!</span>(<span class="string">r"\b(g\d*)\(((?:\s*[r|p]\d*\.\w+\s*,\s*){1,2}\s*[r|p]\d*\.\w+\s*)\)"</span>)
 });
-<span class="kw">static </span>ESC_C: Lazy&lt;Regex&gt; = Lazy::new(|| <span class="macro">regex!</span>(<span class="string">r#&quot;(\s*&quot;[^&quot;]*&quot;?|\s*[^,]*)&quot;#</span>));
+<span class="kw">static </span>ESC_C: Lazy&lt;Regex&gt; = Lazy::new(|| <span class="macro">regex!</span>(<span class="string">r#"(\s*"[^"]*"?|\s*[^,]*)"#</span>));
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">static </span>ESC_E: Lazy&lt;Regex&gt; =
-    Lazy::new(|| <span class="macro">regex!</span>(<span class="string">r&quot;\beval\(([^)]*)\)&quot;</span>));
+    Lazy::new(|| <span class="macro">regex!</span>(<span class="string">r"\beval\(([^)]*)\)"</span>));
 
 <span class="kw">pub fn </span>escape_assertion(s: <span class="kw-2">&amp;</span>str) -&gt; String {
-    ESC_A.replace_all(s, <span class="string">&quot;${1}_&quot;</span>).to_string()
+    ESC_A.replace_all(s, <span class="string">"${1}_"</span>).to_string()
 }
 
 <span class="kw">pub fn </span>remove_comment(s: <span class="kw-2">&amp;</span>str) -&gt; String {
-    <span class="kw">let </span>s = <span class="kw">if let </span><span class="prelude-val">Some</span>(idx) = s.find(<span class="string">&#39;#&#39;</span>) {
+    <span class="kw">let </span>s = <span class="kw">if let </span><span class="prelude-val">Some</span>(idx) = s.find(<span class="string">'#'</span>) {
         <span class="kw-2">&amp;</span>s[..idx]
     } <span class="kw">else </span>{
         s
@@ -216,19 +216,19 @@
 }
 
 <span class="kw">pub fn </span>escape_eval(m: <span class="kw-2">&amp;</span>str) -&gt; Cow&lt;str&gt; {
-    ESC_E.replace_all(m, <span class="string">&quot;eval(escape_assertion(${1}))&quot;</span>)
+    ESC_E.replace_all(m, <span class="string">"eval(escape_assertion(${1}))"</span>)
 }
 
 <span class="kw">pub fn </span>parse_csv_line&lt;S: AsRef&lt;str&gt;&gt;(line: S) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;String&gt;&gt; {
     <span class="kw">let </span>line = line.as_ref().trim();
-    <span class="kw">if </span>line.is_empty() || line.starts_with(<span class="string">&#39;#&#39;</span>) {
+    <span class="kw">if </span>line.is_empty() || line.starts_with(<span class="string">'#'</span>) {
         <span class="kw">return </span><span class="prelude-val">None</span>;
     }
 
     <span class="kw">let </span><span class="kw-2">mut </span>res = <span class="macro">vec!</span>[];
     <span class="kw">for </span>col <span class="kw">in </span>ESC_C.find_iter(line).map(|m| m.as_str().trim()) {
         res.push({
-            <span class="kw">if </span>col.len() &gt;= <span class="number">2 </span>&amp;&amp; col.starts_with(<span class="string">&#39;&quot;&#39;</span>) &amp;&amp; col.ends_with(<span class="string">&#39;&quot;&#39;</span>) {
+            <span class="kw">if </span>col.len() &gt;= <span class="number">2 </span>&amp;&amp; col.starts_with(<span class="string">'"'</span>) &amp;&amp; col.ends_with(<span class="string">'"'</span>) {
                 col[<span class="number">1</span>..col.len() - <span class="number">1</span>].to_owned()
             } <span class="kw">else </span>{
                 col.to_owned()
@@ -248,24 +248,24 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_remove_comment() {
-        <span class="macro">assert!</span>(remove_comment(<span class="string">&quot;#&quot;</span>).is_empty());
+        <span class="macro">assert!</span>(remove_comment(<span class="string">"#"</span>).is_empty());
         <span class="macro">assert_eq!</span>(
-            <span class="string">r#&quot;g(r.sub, p.sub) &amp;&amp; r.obj == p.obj &amp;&amp; r.act == p.act || r.sub == &quot;root&quot;&quot;#</span>,
+            <span class="string">r#"g(r.sub, p.sub) &amp;&amp; r.obj == p.obj &amp;&amp; r.act == p.act || r.sub == "root""#</span>,
             remove_comment(
-                <span class="string">r#&quot;g(r.sub, p.sub) &amp;&amp; r.obj == p.obj &amp;&amp; r.act == p.act || r.sub == &quot;root&quot; # root is the super user&quot;#
+                <span class="string">r#"g(r.sub, p.sub) &amp;&amp; r.obj == p.obj &amp;&amp; r.act == p.act || r.sub == "root" # root is the super user"#
             </span>)
         );
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_escape_assertion() {
-        <span class="kw">let </span>s = <span class="string">&quot;g(r.sub, p.sub) &amp;&amp; r.obj == p.obj &amp;&amp; r.act == p.act&quot;</span>;
-        <span class="kw">let </span>exp = <span class="string">&quot;g(r_sub, p_sub) &amp;&amp; r_obj == p_obj &amp;&amp; r_act == p_act&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"g(r.sub, p.sub) &amp;&amp; r.obj == p.obj &amp;&amp; r.act == p.act"</span>;
+        <span class="kw">let </span>exp = <span class="string">"g(r_sub, p_sub) &amp;&amp; r_obj == p_obj &amp;&amp; r_act == p_act"</span>;
 
         <span class="macro">assert_eq!</span>(exp, escape_assertion(s));
 
-        <span class="kw">let </span>s1 = <span class="string">&quot;g(r2.sub, p2.sub) &amp;&amp; r2.obj == p2.obj &amp;&amp; r2.act == p2.act&quot;</span>;
-        <span class="kw">let </span>exp1 = <span class="string">&quot;g(r2_sub, p2_sub) &amp;&amp; r2_obj == p2_obj &amp;&amp; r2_act == p2_act&quot;</span>;
+        <span class="kw">let </span>s1 = <span class="string">"g(r2.sub, p2.sub) &amp;&amp; r2.obj == p2.obj &amp;&amp; r2.act == p2.act"</span>;
+        <span class="kw">let </span>exp1 = <span class="string">"g(r2_sub, p2_sub) &amp;&amp; r2_obj == p2_obj &amp;&amp; r2_act == p2_act"</span>;
 
         <span class="macro">assert_eq!</span>(exp1, escape_assertion(s1));
     }
@@ -273,12 +273,12 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_csv_parse_1() {
         <span class="macro">assert_eq!</span>(
-            parse_csv_line(<span class="string">&quot;alice, domain1, data1, action1&quot;</span>),
+            parse_csv_line(<span class="string">"alice, domain1, data1, action1"</span>),
             <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[
-                <span class="string">&quot;alice&quot;</span>.to_owned(),
-                <span class="string">&quot;domain1&quot;</span>.to_owned(),
-                <span class="string">&quot;data1&quot;</span>.to_owned(),
-                <span class="string">&quot;action1&quot;</span>.to_owned()
+                <span class="string">"alice"</span>.to_owned(),
+                <span class="string">"domain1"</span>.to_owned(),
+                <span class="string">"data1"</span>.to_owned(),
+                <span class="string">"action1"</span>.to_owned()
             ])
         )
     }
@@ -286,12 +286,12 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_csv_parse_2() {
         <span class="macro">assert_eq!</span>(
-            parse_csv_line(<span class="string">&quot;alice, \&quot;domain1, domain2\&quot;, data1 , action1&quot;</span>),
+            parse_csv_line(<span class="string">"alice, \"domain1, domain2\", data1 , action1"</span>),
             <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[
-                <span class="string">&quot;alice&quot;</span>.to_owned(),
-                <span class="string">&quot;domain1, domain2&quot;</span>.to_owned(),
-                <span class="string">&quot;data1&quot;</span>.to_owned(),
-                <span class="string">&quot;action1&quot;</span>.to_owned()
+                <span class="string">"alice"</span>.to_owned(),
+                <span class="string">"domain1, domain2"</span>.to_owned(),
+                <span class="string">"data1"</span>.to_owned(),
+                <span class="string">"action1"</span>.to_owned()
             ])
         )
     }
@@ -299,67 +299,67 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_csv_parse_3() {
         <span class="macro">assert_eq!</span>(
-            parse_csv_line(<span class="string">&quot;,&quot;</span>),
-            <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="string">&quot;&quot;</span>.to_owned(), <span class="string">&quot;&quot;</span>.to_owned(),])
+            parse_csv_line(<span class="string">","</span>),
+            <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="string">""</span>.to_owned(), <span class="string">""</span>.to_owned(),])
         )
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_csv_parse_4() {
-        <span class="macro">assert_eq!</span>(parse_csv_line(<span class="string">&quot; &quot;</span>), <span class="prelude-val">None</span>);
-        <span class="macro">assert_eq!</span>(parse_csv_line(<span class="string">&quot;#&quot;</span>), <span class="prelude-val">None</span>);
-        <span class="macro">assert_eq!</span>(parse_csv_line(<span class="string">&quot; #&quot;</span>), <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq!</span>(parse_csv_line(<span class="string">" "</span>), <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq!</span>(parse_csv_line(<span class="string">"#"</span>), <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq!</span>(parse_csv_line(<span class="string">" #"</span>), <span class="prelude-val">None</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_csv_parse_5() {
         <span class="macro">assert_eq!</span>(
             parse_csv_line(
-                <span class="string">&quot;alice, \&quot;domain1, domain2\&quot;, \&quot;data1, data2\&quot;, action1&quot;
+                <span class="string">"alice, \"domain1, domain2\", \"data1, data2\", action1"
             </span>),
             <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[
-                <span class="string">&quot;alice&quot;</span>.to_owned(),
-                <span class="string">&quot;domain1, domain2&quot;</span>.to_owned(),
-                <span class="string">&quot;data1, data2&quot;</span>.to_owned(),
-                <span class="string">&quot;action1&quot;</span>.to_owned()
+                <span class="string">"alice"</span>.to_owned(),
+                <span class="string">"domain1, domain2"</span>.to_owned(),
+                <span class="string">"data1, data2"</span>.to_owned(),
+                <span class="string">"action1"</span>.to_owned()
             ])
         )
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_csv_parse_6() {
-        <span class="macro">assert_eq!</span>(parse_csv_line(<span class="string">&quot;\&quot; &quot;</span>), <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="string">&quot;\&quot;&quot;</span>.to_owned()]))
+        <span class="macro">assert_eq!</span>(parse_csv_line(<span class="string">"\" "</span>), <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="string">"\""</span>.to_owned()]))
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_csv_parse_7() {
         <span class="macro">assert_eq!</span>(
-            parse_csv_line(<span class="string">&quot;\&quot; alice&quot;</span>),
-            <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="string">&quot;\&quot; alice&quot;</span>.to_owned()])
+            parse_csv_line(<span class="string">"\" alice"</span>),
+            <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="string">"\" alice"</span>.to_owned()])
         )
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_csv_parse_8() {
         <span class="macro">assert_eq!</span>(
-            parse_csv_line(<span class="string">&quot;alice, \&quot;domain1, domain2&quot;</span>),
-            <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>.to_owned(), <span class="string">&quot;\&quot;domain1, domain2&quot;</span>.to_owned(),])
+            parse_csv_line(<span class="string">"alice, \"domain1, domain2"</span>),
+            <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="string">"alice"</span>.to_owned(), <span class="string">"\"domain1, domain2"</span>.to_owned(),])
         )
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_csv_parse_9() {
-        <span class="macro">assert_eq!</span>(parse_csv_line(<span class="string">&quot;\&quot;\&quot;&quot;</span>), <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="string">&quot;&quot;</span>.to_owned()]));
+        <span class="macro">assert_eq!</span>(parse_csv_line(<span class="string">"\"\""</span>), <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="string">""</span>.to_owned()]));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_csv_parse_10() {
         <span class="macro">assert_eq!</span>(
-            parse_csv_line(<span class="string">&quot;r.sub.Status == \&quot;ACTIVE\&quot;, /data1, read&quot;</span>),
+            parse_csv_line(<span class="string">"r.sub.Status == \"ACTIVE\", /data1, read"</span>),
             <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[
-                <span class="string">&quot;r.sub.Status == \&quot;ACTIVE\&quot;&quot;</span>.to_owned(),
-                <span class="string">&quot;/data1&quot;</span>.to_owned(),
-                <span class="string">&quot;read&quot;</span>.to_owned()
+                <span class="string">"r.sub.Status == \"ACTIVE\""</span>.to_owned(),
+                <span class="string">"/data1"</span>.to_owned(),
+                <span class="string">"read"</span>.to_owned()
             ])
         );
     }

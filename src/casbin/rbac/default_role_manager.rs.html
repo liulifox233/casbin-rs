@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/rbac/default_role_manager.rs`."><title>default_role_manager.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="casbin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/rbac/default_role_manager.rs`."><title>default_role_manager.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="casbin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.1 (3f5fd8dd4 2024-08-06)" data-channel="1.80.1" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -796,21 +796,21 @@
 <span class="kw">use </span>petgraph::stable_graph::{NodeIndex, StableDiGraph};
 <span class="kw">use </span>std::collections::{hash_map::Entry, HashMap, HashSet};
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;cached&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"cached"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::cache::{Cache, DefaultCache};
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;cached&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"cached"</span>)]
 </span><span class="kw">use </span>std::{
     collections::hash_map::DefaultHasher,
     hash::{Hash, Hasher},
 };
 
-<span class="kw">const </span>DEFAULT_DOMAIN: <span class="kw-2">&amp;</span>str = <span class="string">&quot;DEFAULT&quot;</span>;
+<span class="kw">const </span>DEFAULT_DOMAIN: <span class="kw-2">&amp;</span>str = <span class="string">"DEFAULT"</span>;
 
 <span class="kw">pub struct </span>DefaultRoleManager {
     all_domains: HashMap&lt;String, StableDiGraph&lt;String, EdgeVariant&gt;&gt;,
     all_domains_indices: HashMap&lt;String, HashMap&lt;String, NodeIndex&lt;u32&gt;&gt;&gt;,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;cached&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"cached"</span>)]
     </span>cache: DefaultCache&lt;u64, bool&gt;,
     max_hierarchy_level: usize,
     role_matching_fn: <span class="prelude-ty">Option</span>&lt;MatchingFn&gt;,
@@ -829,7 +829,7 @@
             all_domains: HashMap::new(),
             all_domains_indices: HashMap::new(),
             max_hierarchy_level,
-            <span class="attr">#[cfg(feature = <span class="string">&quot;cached&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"cached"</span>)]
             </span>cache: DefaultCache::new(<span class="number">50</span>),
             role_matching_fn: <span class="prelude-val">None</span>,
             domain_matching_fn: <span class="prelude-val">None</span>,
@@ -882,7 +882,7 @@
             }
 
             <span class="kw">if </span>added {
-                <span class="attr">#[cfg(feature = <span class="string">&quot;cached&quot;</span>)]
+                <span class="attr">#[cfg(feature = <span class="string">"cached"</span>)]
                 </span><span class="self">self</span>.cache.clear();
             }
         }
@@ -932,8 +932,8 @@
 }
 
 <span class="doccomment">/// link node of `not_pattern_id` to `maybe_pattern_id` if
-/// `not_pattern` matches `maybe_pattern`&#39;s pattern and
-/// there doesn&#39;t exist a match edge yet
+/// `not_pattern` matches `maybe_pattern`'s pattern and
+/// there doesn't exist a match edge yet
 </span><span class="kw">fn </span>link_if_matches(
     graph: <span class="kw-2">&amp;mut </span>StableDiGraph&lt;String, EdgeVariant&gt;,
     role_matching_fn: <span class="kw">fn</span>(<span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str) -&gt; bool,
@@ -967,7 +967,7 @@
     <span class="kw">fn </span>clear(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="self">self</span>.all_domains_indices.clear();
         <span class="self">self</span>.all_domains.clear();
-        <span class="attr">#[cfg(feature = <span class="string">&quot;cached&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"cached"</span>)]
         </span><span class="self">self</span>.cache.clear();
     }
 
@@ -993,7 +993,7 @@
         <span class="kw">if </span>add_link {
             graph.add_edge(role1, role2, EdgeVariant::Link);
 
-            <span class="attr">#[cfg(feature = <span class="string">&quot;cached&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"cached"</span>)]
             </span><span class="self">self</span>.cache.clear()
         }
     }
@@ -1017,7 +1017,7 @@
             || !<span class="self">self</span>.domain_has_role(name2, domain)
         {
             <span class="kw">return </span><span class="prelude-val">Err</span>(
-                RbacError::NotFound(<span class="macro">format!</span>(<span class="string">&quot;{} OR {}&quot;</span>, name1, name2)).into()
+                RbacError::NotFound(<span class="macro">format!</span>(<span class="string">"{} OR {}"</span>, name1, name2)).into()
             );
         }
 
@@ -1032,7 +1032,7 @@
         <span class="kw">if let </span><span class="prelude-val">Some</span>(edge_index) = graph.find_edge(role1, role2) {
             graph.remove_edge(edge_index).unwrap();
 
-            <span class="attr">#[cfg(feature = <span class="string">&quot;cached&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"cached"</span>)]
             </span><span class="self">self</span>.cache.clear();
         }
 
@@ -1044,7 +1044,7 @@
             <span class="kw">return </span><span class="bool-val">true</span>;
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;cached&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"cached"</span>)]
         </span><span class="kw">let </span>cache_key = {
             <span class="kw">let </span><span class="kw-2">mut </span>hasher = DefaultHasher::new();
             name1.hash(<span class="kw-2">&amp;mut </span>hasher);
@@ -1053,7 +1053,7 @@
             hasher.finish()
         };
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;cached&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"cached"</span>)]
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(res) = <span class="self">self</span>.cache.get(<span class="kw-2">&amp;</span>cache_key) {
             <span class="kw">return </span>res;
         }
@@ -1108,7 +1108,7 @@
             }
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;cached&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"cached"</span>)]
         </span><span class="self">self</span>.cache.set(cache_key, res);
 
         res
@@ -1203,7 +1203,7 @@
     }
 
     <span class="kw">impl </span>Bfs {
-        <span class="doccomment">/// Create a new **Bfs**, using the graph&#39;s visitor map, and put **start**
+        <span class="doccomment">/// Create a new **Bfs**, using the graph's visitor map, and put **start**
         /// in the stack of nodes to visit.
         </span><span class="kw">pub fn </span>new(
             graph: <span class="kw-2">&amp;</span>StableDiGraph&lt;String, EdgeVariant&gt;,
@@ -1269,7 +1269,7 @@
         graph: <span class="kw-2">&amp;</span>StableDiGraph&lt;String, EdgeVariant&gt;,
         node: NodeIndex&lt;u32&gt;,
         with_matches: bool,
-    ) -&gt; Box&lt;<span class="kw">dyn </span>Iterator&lt;Item = NodeIndex&lt;u32&gt;&gt; + <span class="lifetime">&#39;_</span>&gt; {
+    ) -&gt; Box&lt;<span class="kw">dyn </span>Iterator&lt;Item = NodeIndex&lt;u32&gt;&gt; + <span class="lifetime">'_</span>&gt; {
         <span class="comment">// outgoing LINK edges of node
         </span><span class="kw">let </span>outgoing_direct_edge = graph
             .edges_directed(node, petgraph::Direction::Outgoing)
@@ -1331,11 +1331,11 @@
         <span class="attr">#[test]
         </span><span class="kw">fn </span>test_max_depth() {
             <span class="kw">let </span><span class="kw-2">mut </span>deps = StableDiGraph::&lt;String, EdgeVariant&gt;::new();
-            <span class="kw">let </span>pg = deps.add_node(<span class="string">&quot;petgraph&quot;</span>.into());
-            <span class="kw">let </span>fb = deps.add_node(<span class="string">&quot;fixedbitset&quot;</span>.into());
-            <span class="kw">let </span>qc = deps.add_node(<span class="string">&quot;quickcheck&quot;</span>.into());
-            <span class="kw">let </span>rand = deps.add_node(<span class="string">&quot;rand&quot;</span>.into());
-            <span class="kw">let </span>libc = deps.add_node(<span class="string">&quot;libc&quot;</span>.into());
+            <span class="kw">let </span>pg = deps.add_node(<span class="string">"petgraph"</span>.into());
+            <span class="kw">let </span>fb = deps.add_node(<span class="string">"fixedbitset"</span>.into());
+            <span class="kw">let </span>qc = deps.add_node(<span class="string">"quickcheck"</span>.into());
+            <span class="kw">let </span>rand = deps.add_node(<span class="string">"rand"</span>.into());
+            <span class="kw">let </span>libc = deps.add_node(<span class="string">"libc"</span>.into());
 
             deps.extend_with_edges([
                 (pg, fb, EdgeVariant::Link),
@@ -1371,159 +1371,159 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_role() {
         <span class="kw">let </span><span class="kw-2">mut </span>rm = DefaultRoleManager::new(<span class="number">3</span>);
-        rm.add_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>);
-        rm.add_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>);
-        rm.add_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>);
-        rm.add_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>);
-        rm.add_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>);
-        rm.add_link(<span class="string">&quot;g1&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"u1"</span>, <span class="string">"g1"</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"u2"</span>, <span class="string">"g1"</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"u3"</span>, <span class="string">"g2"</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"u4"</span>, <span class="string">"g2"</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"u4"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"g1"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>);
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u1"</span>, <span class="string">"g1"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u1"</span>, <span class="string">"g2"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u1"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u2"</span>, <span class="string">"g1"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u2"</span>, <span class="string">"g2"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u2"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u3"</span>, <span class="string">"g1"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u3"</span>, <span class="string">"g2"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u3"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u4"</span>, <span class="string">"g1"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u4"</span>, <span class="string">"g2"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u4"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>));
 
         <span class="comment">// test get_roles
-        </span><span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;g1&quot;</span>], rm.get_roles(<span class="string">&quot;u1&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;g1&quot;</span>], rm.get_roles(<span class="string">&quot;u2&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;g2&quot;</span>], rm.get_roles(<span class="string">&quot;u3&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;g2&quot;</span>, <span class="string">&quot;g3&quot;</span>], sort_unstable(rm.get_roles(<span class="string">&quot;u4&quot;</span>, <span class="prelude-val">None</span>)));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;g3&quot;</span>], rm.get_roles(<span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], rm.get_roles(<span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], rm.get_roles(<span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>));
+        </span><span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"g1"</span>], rm.get_roles(<span class="string">"u1"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"g1"</span>], rm.get_roles(<span class="string">"u2"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"g2"</span>], rm.get_roles(<span class="string">"u3"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"g2"</span>, <span class="string">"g3"</span>], sort_unstable(rm.get_roles(<span class="string">"u4"</span>, <span class="prelude-val">None</span>)));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"g3"</span>], rm.get_roles(<span class="string">"g1"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], rm.get_roles(<span class="string">"g2"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], rm.get_roles(<span class="string">"g3"</span>, <span class="prelude-val">None</span>));
 
         <span class="comment">// test delete_link
-        </span>rm.delete_link(<span class="string">&quot;g1&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>).unwrap();
-        rm.delete_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>).unwrap();
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;g1&quot;</span>], rm.get_roles(<span class="string">&quot;u1&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;g1&quot;</span>], rm.get_roles(<span class="string">&quot;u2&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;g2&quot;</span>], rm.get_roles(<span class="string">&quot;u3&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;g3&quot;</span>], rm.get_roles(<span class="string">&quot;u4&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], rm.get_roles(<span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], rm.get_roles(<span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], rm.get_roles(<span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>));
+        </span>rm.delete_link(<span class="string">"g1"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>).unwrap();
+        rm.delete_link(<span class="string">"u4"</span>, <span class="string">"g2"</span>, <span class="prelude-val">None</span>).unwrap();
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u1"</span>, <span class="string">"g1"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u1"</span>, <span class="string">"g2"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u1"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u2"</span>, <span class="string">"g1"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u2"</span>, <span class="string">"g2"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u2"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u3"</span>, <span class="string">"g1"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u3"</span>, <span class="string">"g2"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u3"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u4"</span>, <span class="string">"g1"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u4"</span>, <span class="string">"g2"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u4"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"g1"</span>], rm.get_roles(<span class="string">"u1"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"g1"</span>], rm.get_roles(<span class="string">"u2"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"g2"</span>], rm.get_roles(<span class="string">"u3"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"g3"</span>], rm.get_roles(<span class="string">"u4"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], rm.get_roles(<span class="string">"g1"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], rm.get_roles(<span class="string">"g2"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[String::new(); <span class="number">0</span>], rm.get_roles(<span class="string">"g3"</span>, <span class="prelude-val">None</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_clear() {
         <span class="kw">let </span><span class="kw-2">mut </span>rm = DefaultRoleManager::new(<span class="number">3</span>);
-        rm.add_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>);
-        rm.add_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>);
-        rm.add_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>);
-        rm.add_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>);
-        rm.add_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>);
-        rm.add_link(<span class="string">&quot;g1&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"u1"</span>, <span class="string">"g1"</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"u2"</span>, <span class="string">"g1"</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"u3"</span>, <span class="string">"g2"</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"u4"</span>, <span class="string">"g2"</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"u4"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"g1"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>);
 
         rm.clear();
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u1"</span>, <span class="string">"g1"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u1"</span>, <span class="string">"g2"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u1"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u2"</span>, <span class="string">"g1"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u2"</span>, <span class="string">"g2"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u2"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u3"</span>, <span class="string">"g1"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u3"</span>, <span class="string">"g2"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u3"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u4"</span>, <span class="string">"g1"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u4"</span>, <span class="string">"g2"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u4"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_domain_role() {
         <span class="kw">let </span><span class="kw-2">mut </span>rm = DefaultRoleManager::new(<span class="number">3</span>);
-        rm.add_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>));
-        rm.add_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>));
-        rm.add_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>));
-        rm.add_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>));
-        rm.add_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>));
-        rm.add_link(<span class="string">&quot;g1&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>));
+        rm.add_link(<span class="string">"u1"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>));
+        rm.add_link(<span class="string">"u2"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>));
+        rm.add_link(<span class="string">"u3"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>));
+        rm.add_link(<span class="string">"u4"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>));
+        rm.add_link(<span class="string">"u4"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>));
+        rm.add_link(<span class="string">"g1"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>));
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u1"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u1"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u1"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u1"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)));
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u2"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u2"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u2"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u2"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)));
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u3"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u3"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u3"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u3"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)));
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u4"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u4"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u4"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u4"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)));
 
-        rm.delete_link(<span class="string">&quot;g1&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)).unwrap();
+        rm.delete_link(<span class="string">"g1"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)).unwrap();
 
-        rm.delete_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)).unwrap();
+        rm.delete_link(<span class="string">"u4"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)).unwrap();
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u1"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u1"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u1"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u1"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)));
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u2"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u2"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u2"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u2"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)));
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u3"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u3"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u3"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u3"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)));
 
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)));
-        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;admin&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u4"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u4"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">true</span>, rm.has_link(<span class="string">"u4"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)));
+        <span class="macro">assert_eq!</span>(<span class="bool-val">false</span>, rm.has_link(<span class="string">"u4"</span>, <span class="string">"admin"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_users() {
         <span class="kw">let </span><span class="kw-2">mut </span>rm = DefaultRoleManager::new(<span class="number">3</span>);
-        rm.add_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>));
-        rm.add_link(<span class="string">&quot;u2&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>));
+        rm.add_link(<span class="string">"u1"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>));
+        rm.add_link(<span class="string">"u2"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>));
 
-        rm.add_link(<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>));
-        rm.add_link(<span class="string">&quot;u4&quot;</span>, <span class="string">&quot;g2&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>));
+        rm.add_link(<span class="string">"u3"</span>, <span class="string">"g2"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>));
+        rm.add_link(<span class="string">"u4"</span>, <span class="string">"g2"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>));
 
-        rm.add_link(<span class="string">&quot;u5&quot;</span>, <span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"u5"</span>, <span class="string">"g3"</span>, <span class="prelude-val">None</span>);
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;u2&quot;</span>],
-            sort_unstable(rm.get_users(<span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain1&quot;</span>)))
+            <span class="macro">vec!</span>[<span class="string">"u1"</span>, <span class="string">"u2"</span>],
+            sort_unstable(rm.get_users(<span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain1"</span>)))
         );
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;u3&quot;</span>, <span class="string">&quot;u4&quot;</span>],
-            sort_unstable(rm.get_users(<span class="string">&quot;g2&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)))
+            <span class="macro">vec!</span>[<span class="string">"u3"</span>, <span class="string">"u4"</span>],
+            sort_unstable(rm.get_users(<span class="string">"g2"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)))
         );
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;u5&quot;</span>], rm.get_users(<span class="string">&quot;g3&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"u5"</span>], rm.get_users(<span class="string">"g3"</span>, <span class="prelude-val">None</span>));
     }
 
     <span class="attr">#[test]
@@ -1531,9 +1531,9 @@
         <span class="kw">use </span><span class="kw">crate</span>::model::key_match;
         <span class="kw">let </span><span class="kw-2">mut </span>rm = DefaultRoleManager::new(<span class="number">3</span>);
         rm.matching_fn(<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(key_match));
-        rm.add_link(<span class="string">&quot;u1&quot;</span>, <span class="string">&quot;g1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;*&quot;</span>));
+        rm.add_link(<span class="string">"u1"</span>, <span class="string">"g1"</span>, <span class="prelude-val">Some</span>(<span class="string">"*"</span>));
 
-        <span class="macro">assert!</span>(rm.domain_has_role(<span class="string">&quot;u1&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;domain2&quot;</span>)));
+        <span class="macro">assert!</span>(rm.domain_has_role(<span class="string">"u1"</span>, <span class="prelude-val">Some</span>(<span class="string">"domain2"</span>)));
     }
 
     <span class="attr">#[test]
@@ -1541,18 +1541,18 @@
         <span class="kw">use </span><span class="kw">crate</span>::model::key_match;
         <span class="kw">let </span><span class="kw-2">mut </span>rm = DefaultRoleManager::new(<span class="number">10</span>);
         rm.matching_fn(<span class="prelude-val">Some</span>(key_match), <span class="prelude-val">None</span>);
-        rm.add_link(<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;book_group&quot;</span>, <span class="prelude-val">None</span>);
-        rm.add_link(<span class="string">&quot;*&quot;</span>, <span class="string">&quot;book_group&quot;</span>, <span class="prelude-val">None</span>);
-        rm.add_link(<span class="string">&quot;*&quot;</span>, <span class="string">&quot;pen_group&quot;</span>, <span class="prelude-val">None</span>);
-        rm.add_link(<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;pen_group&quot;</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"bob"</span>, <span class="string">"book_group"</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"*"</span>, <span class="string">"book_group"</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"*"</span>, <span class="string">"pen_group"</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"eve"</span>, <span class="string">"pen_group"</span>, <span class="prelude-val">None</span>);
 
-        <span class="macro">assert!</span>(rm.has_link(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;book_group&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert!</span>(rm.has_link(<span class="string">&quot;eve&quot;</span>, <span class="string">&quot;book_group&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert!</span>(rm.has_link(<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;book_group&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert!</span>(rm.has_link(<span class="string">"alice"</span>, <span class="string">"book_group"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert!</span>(rm.has_link(<span class="string">"eve"</span>, <span class="string">"book_group"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert!</span>(rm.has_link(<span class="string">"bob"</span>, <span class="string">"book_group"</span>, <span class="prelude-val">None</span>));
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;book_group&quot;</span>, <span class="string">&quot;pen_group&quot;</span>],
-            sort_unstable(rm.get_roles(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>))
+            <span class="macro">vec!</span>[<span class="string">"book_group"</span>, <span class="string">"pen_group"</span>],
+            sort_unstable(rm.get_roles(<span class="string">"alice"</span>, <span class="prelude-val">None</span>))
         );
     }
 
@@ -1561,21 +1561,21 @@
         <span class="kw">use </span><span class="kw">crate</span>::model::key_match;
         <span class="kw">let </span><span class="kw-2">mut </span>rm = DefaultRoleManager::new(<span class="number">10</span>);
         rm.matching_fn(<span class="prelude-val">Some</span>(key_match), <span class="prelude-val">None</span>);
-        rm.add_link(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;book_group&quot;</span>, <span class="prelude-val">None</span>);
-        rm.add_link(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;*&quot;</span>, <span class="prelude-val">None</span>);
-        rm.add_link(<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;pen_group&quot;</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"alice"</span>, <span class="string">"book_group"</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"alice"</span>, <span class="string">"*"</span>, <span class="prelude-val">None</span>);
+        rm.add_link(<span class="string">"bob"</span>, <span class="string">"pen_group"</span>, <span class="prelude-val">None</span>);
 
-        <span class="macro">assert!</span>(rm.has_link(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;book_group&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert!</span>(rm.has_link(<span class="string">&quot;alice&quot;</span>, <span class="string">&quot;pen_group&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert!</span>(rm.has_link(<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;pen_group&quot;</span>, <span class="prelude-val">None</span>));
-        <span class="macro">assert!</span>(!rm.has_link(<span class="string">&quot;bob&quot;</span>, <span class="string">&quot;book_group&quot;</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert!</span>(rm.has_link(<span class="string">"alice"</span>, <span class="string">"book_group"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert!</span>(rm.has_link(<span class="string">"alice"</span>, <span class="string">"pen_group"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert!</span>(rm.has_link(<span class="string">"bob"</span>, <span class="string">"pen_group"</span>, <span class="prelude-val">None</span>));
+        <span class="macro">assert!</span>(!rm.has_link(<span class="string">"bob"</span>, <span class="string">"book_group"</span>, <span class="prelude-val">None</span>));
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">vec!</span>[<span class="string">&quot;*&quot;</span>, <span class="string">&quot;alice&quot;</span>, <span class="string">&quot;bob&quot;</span>, <span class="string">&quot;book_group&quot;</span>, <span class="string">&quot;pen_group&quot;</span>],
-            sort_unstable(rm.get_roles(<span class="string">&quot;alice&quot;</span>, <span class="prelude-val">None</span>))
+            <span class="macro">vec!</span>[<span class="string">"*"</span>, <span class="string">"alice"</span>, <span class="string">"bob"</span>, <span class="string">"book_group"</span>, <span class="string">"pen_group"</span>],
+            sort_unstable(rm.get_roles(<span class="string">"alice"</span>, <span class="prelude-val">None</span>))
         );
 
-        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">&quot;alice&quot;</span>], sort_unstable(rm.get_users(<span class="string">&quot;*&quot;</span>, <span class="prelude-val">None</span>)));
+        <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="string">"alice"</span>], sort_unstable(rm.get_users(<span class="string">"*"</span>, <span class="prelude-val">None</span>)));
     }
 }
 </code></pre></div></section></main></body></html>

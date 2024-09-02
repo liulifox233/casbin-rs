@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/error.rs`."><title>error.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="casbin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/error.rs`."><title>error.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="casbin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.1 (3f5fd8dd4 2024-08-06)" data-channel="1.80.1" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -96,67 +96,67 @@
 <span class="doccomment">/// ModelError represents any type of errors in model configuration
 </span><span class="attr">#[derive(Error, Debug)]
 </span><span class="kw">pub enum </span>ModelError {
-    <span class="attr">#[error(<span class="string">&quot;Invalid request definition: `{0}`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Invalid request definition: `{0}`"</span>)]
     </span>R(String),
-    <span class="attr">#[error(<span class="string">&quot;Invalid policy definition: `{0}`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Invalid policy definition: `{0}`"</span>)]
     </span>P(String),
-    <span class="attr">#[error(<span class="string">&quot;Unsupported effect: `{0}`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Unsupported effect: `{0}`"</span>)]
     </span>E(String),
-    <span class="attr">#[error(<span class="string">&quot;Invalid matcher: `{0}`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Invalid matcher: `{0}`"</span>)]
     </span>M(String),
-    <span class="attr">#[error(<span class="string">&quot;Other: `{0}`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Other: `{0}`"</span>)]
     </span>Other(String),
 }
 
 <span class="doccomment">/// RequestError represents any type of errors in coming request
 </span><span class="attr">#[derive(Error, Debug)]
 </span><span class="kw">pub enum </span>RequestError {
-    <span class="attr">#[error(<span class="string">&quot;Request doesn&#39;t match request definition. expected length: {0}, found length {1}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Request doesn't match request definition. expected length: {0}, found length {1}"</span>)]
     </span>UnmatchRequestDefinition(usize, usize),
 }
 
 <span class="doccomment">/// PolicyError represents any type of errors in policy
 </span><span class="attr">#[derive(Error, Debug)]
 </span><span class="kw">pub enum </span>PolicyError {
-    <span class="attr">#[error(<span class="string">&quot;Policy doesn&#39;t match policy definition. expected length: {0}, found length {1}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Policy doesn't match policy definition. expected length: {0}, found length {1}"</span>)]
     </span>UnmatchPolicyDefinition(usize, usize),
 }
 
 <span class="doccomment">/// RBAC error represents any type of errors in RBAC role manager
 </span><span class="attr">#[derive(Error, Debug)]
 </span><span class="kw">pub enum </span>RbacError {
-    <span class="attr">#[error(<span class="string">&quot;Role `{0}` not found&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Role `{0}` not found"</span>)]
     </span>NotFound(String),
 }
-<span class="doccomment">/// AdapterError error represents any type of errors in adapter&#39;s execution
+<span class="doccomment">/// AdapterError error represents any type of errors in adapter's execution
 </span><span class="attr">#[derive(Error, Debug)]
-#[error(<span class="string">&quot;Adapter error: {0:?}&quot;</span>)]
+#[error(<span class="string">"Adapter error: {0:?}"</span>)]
 </span><span class="kw">pub struct </span>AdapterError(<span class="kw">pub </span>Box&lt;<span class="kw">dyn </span>StdError + Send + Sync&gt;);
 
 <span class="doccomment">/// General casbin error
 </span><span class="attr">#[derive(Error, Debug)]
 </span><span class="kw">pub enum </span>Error {
-    <span class="attr">#[error(<span class="string">&quot;Casbin Io Error: `{0:?}`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Casbin Io Error: `{0:?}`"</span>)]
     </span>IoError(<span class="attr">#[from] </span>IoError),
 
-    <span class="attr">#[error(<span class="string">&quot;Casbin Model Error: `{0:?}`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Casbin Model Error: `{0:?}`"</span>)]
     </span>ModelError(<span class="attr">#[from] </span>ModelError),
 
-    <span class="attr">#[error(<span class="string">&quot;Casbin Policy Error: `{0:?}`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Casbin Policy Error: `{0:?}`"</span>)]
     </span>PolicyError(<span class="attr">#[from] </span>PolicyError),
 
-    <span class="attr">#[error(<span class="string">&quot;Casbin Role Manager Error: `{0:?}`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Casbin Role Manager Error: `{0:?}`"</span>)]
     </span>RbacError(<span class="attr">#[from] </span>RbacError),
 
-    <span class="attr">#[error(<span class="string">&quot;Casbin Evaluation Error: `{0:?}`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Casbin Evaluation Error: `{0:?}`"</span>)]
     </span>RhaiError(<span class="attr">#[from] </span>Box&lt;EvalAltResult&gt;),
-    <span class="attr">#[error(<span class="string">&quot;Casbin Parse Error: `{0:?}`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Casbin Parse Error: `{0:?}`"</span>)]
     </span>RhaiParseError(<span class="attr">#[from] </span>ParseError),
 
-    <span class="attr">#[error(<span class="string">&quot;Casbin Request Error: `{0:?}`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Casbin Request Error: `{0:?}`"</span>)]
     </span>RequestError(<span class="attr">#[from] </span>RequestError),
 
-    <span class="attr">#[error(<span class="string">&quot;Casbin Adapter Error: `{0:?}`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Casbin Adapter Error: `{0:?}`"</span>)]
     </span>AdapterError(<span class="attr">#[from] </span>AdapterError),
 }
 
