@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["casbin_js_get_permission_for_user"]};
